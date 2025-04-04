@@ -9,6 +9,7 @@ protocol HTTPRequestComponents {
     var method: HTTPMethod { get }
     var headers: [String: String] { get }
     var body: Encodable? { get } // Any type that conforms Encodable protocol
+    var authorized: Bool { get }
     // For HTTP response
     associatedtype Response: Decodable // The expected type is defined by the type that conforms this protocol
     typealias ResponseCompletion = (Result<Response, APIError>) -> Void // To use it in APISession
@@ -20,4 +21,5 @@ extension HTTPRequestComponents {
     var queryParameters: [String : String]? { [:] }
     var headers: [String : String] { [:] }
     var body: Encodable? { nil }
+    var authorized: Bool { false }
 }

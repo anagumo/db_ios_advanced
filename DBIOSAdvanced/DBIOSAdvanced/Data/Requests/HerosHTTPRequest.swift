@@ -4,6 +4,7 @@ struct HerosHTTPRequest: HTTPRequestComponents {
     var path: String = "/api/heros/all"
     var method: HTTPMethod = .POST
     var body: Encodable?
+    var authorized: Bool = true
     typealias Response = [HeroDTO]
     
     init(name: String = "") {

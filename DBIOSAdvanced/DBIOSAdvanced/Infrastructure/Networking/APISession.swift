@@ -15,9 +15,11 @@ protocol APISessionProtocol {
 final class APISession: APISessionProtocol {
     static let shared = APISession()
     private let urlSession: URLSession
+    private let httpRequestInterceptors: [HTTPRequestInterceptor]
     
     init(urlSession: URLSession = .shared) {
         self.urlSession = urlSession
+        self.httpRequestInterceptors = [HTTPRequestInterceptor()]
     }
     
     func request<RequestComponents: HTTPRequestComponents>(
@@ -26,8 +28,17 @@ final class APISession: APISessionProtocol {
     ) {
         let path = requestComponents.path
         do {
-            let httpRequest = try HTTPRequestBuilder(requestComponents: requestComponents).build()
-            urlSession.dataTask(with: httpRequest) { data, urlResponse, error in
+            var urlRequest = try HTTPRequestBuilder(requestComponents: requestComponents).build()
+            
+            // Applies all interceptors
+            httpRequestInterceptors.forEach { httpRequestInterceptor in
+                httpRequestInterceptor.intercept(
+                    &urlRequest,
+                    authorized: requestComponents.authorized
+                )
+            }
+            
+            urlSession.dataTask(with: urlRequest) { data, urlResponse, error in
                 guard error == nil else {
                     guard let error = error as? NSError else {
                         completion(.failure(APIError.unknown(url: path)))
