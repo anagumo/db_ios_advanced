@@ -19,7 +19,7 @@ final class ApiSessionTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    func testLoginHTTPRequest() {
+    func testLoginHTTPRequest_ShouldReturnSuccess() throws {
         // Given
         let successExpectation = expectation(description: "Login succeed")
         var receivedRequest: URLRequest?
@@ -44,7 +44,7 @@ final class ApiSessionTests: XCTestCase {
                 receivedJWT = jwt
                 successExpectation.fulfill()
             } catch {
-                XCTFail("Waiting for success")
+                XCTFail("Success expected")
             }
         })
         
@@ -55,5 +55,41 @@ final class ApiSessionTests: XCTestCase {
             forHTTPHeaderField: "Authorization"), "Basic cmVndWxhcnVzZXJAa2VlcGNvZGluZy5lczpSZWd1bGFydXNlcjE="
         )
         XCTAssertNotNil(receivedJWT)
+    }
+    
+    func testLoginHTTPRequest_ShouldReturnUnauthorizedError() throws {
+        // Given
+        let failureExpectation = expectation(description: "Login failed")
+        failureExpectation.assertForOverFulfill = true
+        MockURLProtocol.requestHandler = { request in
+            let url = try XCTUnwrap(request.url)
+            let request = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 401))
+            return (request, Data())
+        }
+        
+        // When
+        var receivedError: APIError?
+        let loginHTTPRequest = LoginHTTPRequest(
+            username: "user@keepcoding.es",
+            password: "Regular"
+        )
+        sut?.request(loginHTTPRequest, completion: { result in
+            do {
+                let _ = try result.get()
+                XCTFail("APIError expected")
+            } catch let error as APIError {
+                receivedError = error
+                failureExpectation.fulfill()
+            } catch {
+                XCTFail("APIError expected")
+            }
+        })
+        
+        // Then
+        wait(for: [failureExpectation], timeout: 0.1)
+        let unauthorizedAPIError = try XCTUnwrap(receivedError)
+        XCTAssertEqual(unauthorizedAPIError.url, "/api/auth/login")
+        XCTAssertEqual(unauthorizedAPIError.reason, "Wrong email or password. Please log in again.")
+        XCTAssertEqual(unauthorizedAPIError.statusCode, 401)
     }
 }
