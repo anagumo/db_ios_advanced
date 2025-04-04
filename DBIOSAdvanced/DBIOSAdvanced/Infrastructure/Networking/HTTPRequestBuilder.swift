@@ -14,7 +14,9 @@ struct HTTPRequestBuilder {
         urlComponents.path = requestComponents.path
         
         if let queryParameters = requestComponents.queryParameters {
-            urlComponents.queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: $0.value) }
+            urlComponents.queryItems = queryParameters.map {
+                URLQueryItem(name: $0.key, value: $0.value)
+            }
         }
         
         guard let url = urlComponents.url else {
@@ -26,19 +28,19 @@ struct HTTPRequestBuilder {
     
     func build() throws -> URLRequest {
         do {
-            var request = try URLRequest(url: url())
-            request.httpMethod = requestComponents.method.value
+            var urlRequest = try URLRequest(url: url())
+            urlRequest.httpMethod = requestComponents.method.rawValue
             
-            if let body = requestComponents.body {
-                request.httpBody = try JSONEncoder().encode(body)
+            if let httpBody = requestComponents.body {
+                urlRequest.httpBody = try JSONEncoder().encode(httpBody)
             }
             
-            request.allHTTPHeaderFields = [
+            urlRequest.allHTTPHeaderFields = [
                 "Content-Type": "application/json; charset=utf-8",
                 "Accept": "application/json"
             ].merging(requestComponents.headers) { $1 }
             
-            return request
+            return urlRequest
         } catch {
             throw APIError.badRequest(url: requestComponents.path)
         }

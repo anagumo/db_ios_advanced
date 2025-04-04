@@ -1,22 +1,32 @@
 import Foundation
 
 protocol APISessionProtocol {
-    func request<RequestComponents: HTTPRequestComponents>(_ request: RequestComponents, completion: @escaping RequestComponents.URLResponseCompletion)
+    /// A generic function that implements a request using  an URL Session
+    /// - Parameters:
+    ///   - requestComponents: an object of type `(HTTPRequestComponents)` that represents a request to the server and contains an URL, headers, etc.
+    ///   - completion: a clossure of type `(ResponseCompletion)`  that represents the data result and returns either a Decodable  or an Error
+    func request<RequestComponents: HTTPRequestComponents>(
+        _ requestComponents: RequestComponents,
+        completion: @escaping RequestComponents.ResponseCompletion
+    )
 }
 
 final class APISession: APISessionProtocol {
+    static let shared = APISession()
     private let urlSession: URLSession
     
     init(urlSession: URLSession = .shared) {
         self.urlSession = urlSession
     }
     
-    func request<RequestComponents: HTTPRequestComponents>(_ requestComponents: RequestComponents, completion: @escaping RequestComponents.URLResponseCompletion) {
+    func request<RequestComponents: HTTPRequestComponents>(
+        _ requestComponents: RequestComponents,
+        completion: @escaping RequestComponents.ResponseCompletion
+    ) {
         let path = requestComponents.path
         do {
             let httpRequest = try HTTPRequestBuilder(requestComponents: requestComponents).build()
             urlSession.dataTask(with: httpRequest) { data, urlResponse, error in
-                
                 guard error != nil else {
                     guard let error = error as? NSError else {
                         completion(.failure(APIError.unknown(url: path)))

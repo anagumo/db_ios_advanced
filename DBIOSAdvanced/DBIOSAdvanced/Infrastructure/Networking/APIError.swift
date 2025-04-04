@@ -15,11 +15,17 @@ struct APIError: Error {
 extension APIError {
     
     static func malformedURL(url: String) -> Self {
-        APIError(url: url, reason: "Malformed URL")
+        APIError(
+            url: url,
+            reason: "Malformed URL"
+        )
     }
     
     static func badRequest(url: String) -> Self {
-        APIError(url: url, reason: "Bad request")
+        APIError(
+            url: url,
+            reason: "Bad request"
+        )
     }
     
     static func server(url: String, statusCode: Int?) -> Self {
