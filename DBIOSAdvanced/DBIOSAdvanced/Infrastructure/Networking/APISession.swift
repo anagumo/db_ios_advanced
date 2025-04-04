@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 protocol APISessionProtocol {
     /// A generic function that implements a request using  an URL Session
@@ -27,7 +28,7 @@ final class APISession: APISessionProtocol {
         do {
             let httpRequest = try HTTPRequestBuilder(requestComponents: requestComponents).build()
             urlSession.dataTask(with: httpRequest) { data, urlResponse, error in
-                guard error != nil else {
+                guard error == nil else {
                     guard let error = error as? NSError else {
                         completion(.failure(APIError.unknown(url: path)))
                         return
@@ -49,21 +50,26 @@ final class APISession: APISessionProtocol {
                 
                 switch statusCode {
                 case 200..<300:
-                    do {
-                        let decodedData = try JSONDecoder().decode(RequestComponents.Response.self, from: data)
-                        completion(.success(decodedData))
-                    } catch {
-                        completion(.failure(APIError.decoding(url: path)))
+                    // Validation for Login response data since is not a JSON
+                    if RequestComponents.Response.self == Data.self {
+                        completion(.success(data as! RequestComponents.Response))
+                    } else {
+                        do {
+                            let decodedData = try JSONDecoder().decode(RequestComponents.Response.self, from: data)
+                            completion(.success(decodedData))
+                        } catch {
+                            completion(.failure(APIError.decoding(url: path)))
+                        }
                     }
                 case 401:
                     // Represents an unauthorized error to provide feedback about wrong email or password
                     completion(.failure(APIError.unauthorized(url: path, statusCode: statusCode)))
                 default:
-                    completion(.failure(APIError.unknown(url: path)))
+                    completion(.failure(APIError.server(url: path, statusCode: statusCode)))
                 }
             }.resume()
         } catch {
-            completion(.failure(APIError.unknown(url: path)))
+            completion(.failure(APIError.badRequest(url: path)))
         }
     }
 }

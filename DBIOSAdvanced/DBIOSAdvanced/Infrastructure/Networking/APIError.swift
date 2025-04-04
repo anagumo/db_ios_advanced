@@ -1,6 +1,6 @@
 import Foundation
 
-struct APIError: Error {
+struct APIError: Error, Equatable {
     let url: String
     let reason: String
     let statusCode: Int?
@@ -45,7 +45,7 @@ extension APIError {
     }
     
     static func decoding(url: String) -> Self {
-        APIError(url: url, reason: "Decoding failed")
+        APIError(url: url, reason: "Cannot decode data from URL")
     }
     
     static func unauthorized(url: String, statusCode: Int?) -> Self {

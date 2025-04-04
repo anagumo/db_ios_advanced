@@ -6,7 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		C3921B562D9F7DF300246BED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C3DC16022D948B710047AE2B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3DC16092D948B710047AE2B;
+			remoteInfo = DBIOSAdvanced;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		C3921B522D9F7DF300246BED /* DBIOSAdvancedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DBIOSAdvancedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DC160A2D948B710047AE2B /* DBIOSAdvanced.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DBIOSAdvanced.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -21,6 +32,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		C3921B532D9F7DF300246BED /* DBIOSAdvancedTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DBIOSAdvancedTests;
+			sourceTree = "<group>";
+		};
 		C3DC160C2D948B710047AE2B /* DBIOSAdvanced */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -32,6 +48,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C3921B4F2D9F7DF300246BED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C3DC16072D948B710047AE2B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				C3DC160C2D948B710047AE2B /* DBIOSAdvanced */,
+				C3921B532D9F7DF300246BED /* DBIOSAdvancedTests */,
 				C3DC160B2D948B710047AE2B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				C3DC160A2D948B710047AE2B /* DBIOSAdvanced.app */,
+				C3921B522D9F7DF300246BED /* DBIOSAdvancedTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +86,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C3921B512D9F7DF300246BED /* DBIOSAdvancedTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3921B582D9F7DF300246BED /* Build configuration list for PBXNativeTarget "DBIOSAdvancedTests" */;
+			buildPhases = (
+				C3921B4E2D9F7DF300246BED /* Sources */,
+				C3921B4F2D9F7DF300246BED /* Frameworks */,
+				C3921B502D9F7DF300246BED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C3921B572D9F7DF300246BED /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C3921B532D9F7DF300246BED /* DBIOSAdvancedTests */,
+			);
+			name = DBIOSAdvancedTests;
+			packageProductDependencies = (
+			);
+			productName = DBIOSAdvancedTests;
+			productReference = C3921B522D9F7DF300246BED /* DBIOSAdvancedTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C3DC16092D948B710047AE2B /* DBIOSAdvanced */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C3DC16202D948B720047AE2B /* Build configuration list for PBXNativeTarget "DBIOSAdvanced" */;
@@ -93,6 +141,10 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					C3921B512D9F7DF300246BED = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = C3DC16092D948B710047AE2B;
+					};
 					C3DC16092D948B710047AE2B = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -113,11 +165,19 @@
 			projectRoot = "";
 			targets = (
 				C3DC16092D948B710047AE2B /* DBIOSAdvanced */,
+				C3921B512D9F7DF300246BED /* DBIOSAdvancedTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C3921B502D9F7DF300246BED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C3DC16082D948B710047AE2B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +188,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C3921B4E2D9F7DF300246BED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C3DC16062D948B710047AE2B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,7 +204,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		C3921B572D9F7DF300246BED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C3DC16092D948B710047AE2B /* DBIOSAdvanced */;
+			targetProxy = C3921B562D9F7DF300246BED /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		C3921B592D9F7DF300246BED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WT5C6TTJP5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.anagumo.DBIOSAdvancedTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DBIOSAdvanced.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DBIOSAdvanced";
+			};
+			name = Debug;
+		};
+		C3921B5A2D9F7DF300246BED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WT5C6TTJP5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.anagumo.DBIOSAdvancedTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DBIOSAdvanced.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DBIOSAdvanced";
+			};
+			name = Release;
+		};
 		C3DC16212D948B720047AE2B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -322,6 +433,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C3921B582D9F7DF300246BED /* Build configuration list for PBXNativeTarget "DBIOSAdvancedTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3921B592D9F7DF300246BED /* Debug */,
+				C3921B5A2D9F7DF300246BED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C3DC16052D948B710047AE2B /* Build configuration list for PBXProject "DBIOSAdvanced" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
