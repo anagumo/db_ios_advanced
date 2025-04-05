@@ -1,19 +1,21 @@
 import Foundation
 import SwiftData
 
-@Model class LocationEntity {
-    @Attribute(.unique) var identifier: String
+@Model
+class TransformationEntity {
+    @Attribute(.unique)
+    var identifier: String
     var name: String?
     var info: String?
     var photo: String?
-    var hero: HeroEntity?
+    var hero: HeroDTO?
     
     init(
         identifier: String,
         name: String? = nil,
         info: String? = nil,
         photo: String? = nil,
-        hero: HeroEntity? = nil
+        hero: HeroDTO? = nil
     ) {
         self.identifier = identifier
         self.name = name

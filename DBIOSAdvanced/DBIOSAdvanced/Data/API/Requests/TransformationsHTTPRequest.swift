@@ -1,6 +1,6 @@
 import Foundation
 
-struct TransformationHTTPRequest: HTTPRequestComponents {
+struct TransformationsHTTPRequest: HTTPRequestComponents {
     var path: String = "/api/heros/tranformations"
     var method: HTTPMethod = .POST
     var body: Encodable?
@@ -12,7 +12,7 @@ struct TransformationHTTPRequest: HTTPRequestComponents {
     }
 }
 
-extension TransformationHTTPRequest {
+extension TransformationsHTTPRequest {
     struct HTTPBody: Encodable {
         let id: String
     }

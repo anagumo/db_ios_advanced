@@ -4,6 +4,7 @@ struct LoginHTTPRequest: HTTPRequestComponents {
     var path: String = "/api/auth/login"
     var method: HTTPMethod = .POST
     var headers: [String : String]
+    var authorized: Bool = false
     typealias Response = Data
     
     init(username: String, password: String) {

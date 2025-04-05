@@ -9,6 +9,8 @@ class HeroEntity {
     var info: String?
     var photo: String?
     var favorite: Bool?
+    @Relationship(deleteRule: .cascade, inverse: \TransformationEntity.hero)
+    var transformations: [TransformationEntity]?
     @Relationship(deleteRule: .cascade, inverse: \LocationEntity.hero)
     var locations: [LocationEntity]?
     

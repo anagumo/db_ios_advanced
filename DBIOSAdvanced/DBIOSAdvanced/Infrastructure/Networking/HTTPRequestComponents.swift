@@ -21,5 +21,4 @@ extension HTTPRequestComponents {
     var queryParameters: [String : String]? { [:] }
     var headers: [String : String] { [:] }
     var body: Encodable? { nil }
-    var authorized: Bool { false }
 }
