@@ -20,6 +20,7 @@ class HeroEntity {
         info: String? = nil,
         photo: String? = nil,
         favorite: Bool? = nil,
+        transformations: [TransformationEntity]? = nil,
         locations: [LocationEntity]? = nil
     ) {
         self.identifier = identifier
@@ -27,6 +28,7 @@ class HeroEntity {
         self.info = info
         self.photo = photo
         self.favorite = favorite
+        self.transformations = transformations
         self.locations = locations
     }
 }

@@ -3,7 +3,9 @@ import SwiftData
 import OSLog
 
 protocol StoreDataProviderProtocol {
-    func fetchHeros(predicate: Predicate<HeroEntity>, sortDescriptor: SortDescriptor<HeroEntity>) -> [HeroEntity]
+    func fetchHeros(name: String?, sortAscending: Bool) -> [HeroEntity]
+    func fetchTransformations(heroName: String) -> [TransformationEntity]
+    func fetchLocations(heroName: String) -> [LocationEntity]
     func clearBBDD()
 }
 
@@ -43,15 +45,38 @@ final class StoreDataProvider: StoreDataProviderProtocol {
         }
     }
     
-    func fetchHeros(predicate: Predicate<HeroEntity>, sortDescriptor: SortDescriptor<HeroEntity>) -> [HeroEntity] {
-        let fetchDescriptor = FetchDescriptor<HeroEntity>(predicate: predicate, sortBy: [sortDescriptor])
+    func fetchHeros(name: String? = nil, sortAscending: Bool = false) -> [HeroEntity] {
+        var fetchDescriptor = FetchDescriptor<HeroEntity>()
+        if let name {
+            fetchDescriptor.predicate = #Predicate { $0.name == name }
+        }
+        let sortDescriptor = SortDescriptor<HeroEntity>(\.name, order: sortAscending ? .forward : .reverse)
+        fetchDescriptor.sortBy = [sortDescriptor]
+        
         do {
             let heroEntities = try modelContext.fetch(fetchDescriptor)
             return heroEntities
         } catch {
-            Logger.log("Hero Entities not found in BBDD", level: .error, layer: .repository)
+            Logger.log("Hero entities not found in BBDD", level: .error, layer: .repository)
             return []
         }
+    }
+    
+    func fetchTransformations(heroName: String) -> [TransformationEntity] {
+        guard let hero = fetchHeros(name: heroName).first else {
+            Logger.log("Hero entities not found in BBDD", level: .error, layer: .repository)
+            return []
+        }
+        
+        return hero.transformations ?? []
+    }
+    
+    func fetchLocations(heroName: String) -> [LocationEntity] {
+        guard let hero = fetchHeros(name: heroName).first else {
+            Logger.log("Hero entities not found in BBDD", level: .error, layer: .repository)
+            return []
+        }
+        return hero.locations ?? []
     }
     
     func clearBBDD() {
