@@ -2,14 +2,12 @@ import Foundation
 import SwiftData
 import OSLog
 
-protocol StoreDataProviderProtocol {
-    func fetchHeros(identifier: String?, name: String?, sortAscending: Bool) -> [HeroEntity]
-    func fetchTransformations(heroID: String) -> [TransformationEntity]
-    func fetchLocations(heroID: String) -> [LocationEntity]
-    func clearBBDD()
+enum PersistenceType: String {
+    case memory
+    case disk
 }
 
-final class StoreDataProvider: StoreDataProviderProtocol {
+final class StoreDataProvider {
     static let shared = StoreDataProvider()
     private let modelContainer: ModelContainer
     private lazy var modelContext: ModelContext = {
@@ -18,14 +16,25 @@ final class StoreDataProvider: StoreDataProviderProtocol {
         return ModelContext(modelContainer)
     }()
     
-    init() {
-        let urlBBDD = URL.applicationSupportDirectory.appending(component: "DragonBall.sqlite")
-        let modelConfiguration = ModelConfiguration(url: urlBBDD)
+    init(persistenceType: PersistenceType = .disk) {
+        let modelConfiguration: ModelConfiguration?
+        if persistenceType == .disk {
+            let urlBBDD = URL.applicationSupportDirectory.appending(component: "DragonBall.sqlite")
+            modelConfiguration = ModelConfiguration(url: urlBBDD)
+        } else {
+            modelConfiguration = ModelConfiguration(isStoredInMemoryOnly: true)
+        }
+        
         do {
-            modelContainer = try ModelContainer(
-                for: HeroEntity.self, TransformationEntity.self, LocationEntity.self,
-                configurations: modelConfiguration
-            )
+            if let modelConfiguration {
+                modelContainer = try ModelContainer(
+                    for: HeroEntity.self, TransformationEntity.self, LocationEntity.self,
+                    configurations: modelConfiguration
+                )
+            } else {
+                Logger.log("Unexpected error creating the model container", level: .warning, layer: .repository)
+                throw SwiftDataError.loadIssueModelContainer
+            }
         } catch {
             Logger.log("Swift Data couln not load BBDD", level: .critical, layer: .repository)
             fatalError("Swift Data could not load BBDD: \(error)")
@@ -75,7 +84,7 @@ final class StoreDataProvider: StoreDataProviderProtocol {
         saveContext()
     }
     
-    func fetchHeros(identifier: String? = nil, name: String? = nil, sortAscending: Bool = false) -> [HeroEntity] {
+    func fetchHeros(identifier: String? = nil, name: String? = nil, sortAscending: Bool = true) -> [HeroEntity] {
         var fetchDescriptor = FetchDescriptor<HeroEntity>()
         
         if let identifier {
