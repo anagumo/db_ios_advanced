@@ -8,14 +8,14 @@ class TransformationEntity {
     var name: String?
     var info: String?
     var photo: String?
-    var hero: HeroDTO?
+    var hero: HeroEntity?
     
     init(
         identifier: String,
         name: String? = nil,
         info: String? = nil,
         photo: String? = nil,
-        hero: HeroDTO? = nil
+        hero: HeroEntity? = nil
     ) {
         self.identifier = identifier
         self.name = name
