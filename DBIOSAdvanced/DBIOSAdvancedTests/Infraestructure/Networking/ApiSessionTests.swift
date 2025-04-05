@@ -2,7 +2,7 @@ import XCTest
 @testable import DBIOSAdvanced
 
 final class ApiSessionTests: XCTestCase {
-    var sut: APISession?
+    var sut: APISessionProtocol?
 
     override func setUpWithError() throws {
         try super.setUpWithError()

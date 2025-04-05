@@ -15,7 +15,7 @@ protocol APISessionProtocol {
 final class APISession: APISessionProtocol {
     static let shared = APISession()
     private let urlSession: URLSession
-    private let httpRequestInterceptors: [HTTPRequestInterceptor]
+    private let httpRequestInterceptors: [HTTPRequestInterceptorProtocol]
     
     init(urlSession: URLSession = .shared) {
         self.urlSession = urlSession

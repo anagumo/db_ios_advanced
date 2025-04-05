@@ -2,14 +2,14 @@ import Foundation
 import KeychainSwift
 import OSLog
 
-protocol SessionDataSourceProtocol {
+protocol SessionLocalDataSourceProtocol {
     func get() -> String?
     func set(_ jwt: Data)
     func clear()
 }
 
-final class SessionDataSource: SessionDataSourceProtocol {
-    static let shared = SessionDataSource()
+final class SessionLocalDataSource: SessionLocalDataSourceProtocol {
+    static let shared = SessionLocalDataSource()
     private let keychainSwift = KeychainSwift()
     private let jwtKey = "jwt"
     

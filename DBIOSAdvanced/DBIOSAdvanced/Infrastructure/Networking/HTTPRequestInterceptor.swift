@@ -11,14 +11,14 @@ protocol HTTPRequestInterceptorProtocol {
 
 /// Implements an Interceptor to intercept network calls to add a token
 final class HTTPRequestInterceptor: HTTPRequestInterceptorProtocol {
-    private let sessionDataSource: SessionDataSourceProtocol
+    private let sessionLocalDataSource: SessionLocalDataSourceProtocol
     
-    init(sessionDataSource: SessionDataSourceProtocol = SessionDataSource.shared) {
-        self.sessionDataSource = sessionDataSource
+    init(sessionLocalDataSource: SessionLocalDataSourceProtocol = SessionLocalDataSource.shared) {
+        self.sessionLocalDataSource = sessionLocalDataSource
     }
     
     func intercept(_ request: inout URLRequest, authorized: Bool) {
-        guard let jwt = sessionDataSource.get(), authorized else {
+        guard let jwt = sessionLocalDataSource.get(), authorized else {
             if authorized {
                 Logger.log("JWT expired", level: .notice, layer: .infraestructure)
             } else {
