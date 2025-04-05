@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 protocol HTTPRequestInterceptorProtocol {
     /// Implements an interception
@@ -18,6 +19,11 @@ final class HTTPRequestInterceptor: HTTPRequestInterceptorProtocol {
     
     func intercept(_ request: inout URLRequest, authorized: Bool) {
         guard let jwt = sessionDataSource.get(), authorized else {
+            if authorized {
+                Logger.log("JWT expired", level: .notice, layer: .infraestructure)
+            } else {
+                Logger.log("The endpoint does not require Authorization", level: .info, layer: .infraestructure)
+            }
             return
         }
         

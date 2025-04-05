@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 struct HTTPRequestBuilder {
     let requestComponents: any HTTPRequestComponents
@@ -14,12 +15,14 @@ struct HTTPRequestBuilder {
         urlComponents.path = requestComponents.path
         
         if let queryParameters = requestComponents.queryParameters {
+            Logger.log("The URL has query params: \(queryParameters)", level: .debug, layer: .infraestructure)
             urlComponents.queryItems = queryParameters.map {
                 URLQueryItem(name: $0.key, value: $0.value)
             }
         }
         
         guard let url = urlComponents.url else {
+            Logger.log("Failed to create an URL", level: .error, layer: .infraestructure)
             throw APIError.malformedURL(url: requestComponents.path)
         }
         
@@ -32,6 +35,7 @@ struct HTTPRequestBuilder {
             urlRequest.httpMethod = requestComponents.method.rawValue
             
             if let httpBody = requestComponents.body {
+                Logger.log("The URL request has body: \(httpBody)", level: .debug, layer: .infraestructure)
                 urlRequest.httpBody = try JSONEncoder().encode(httpBody)
             }
             
@@ -42,6 +46,7 @@ struct HTTPRequestBuilder {
             
             return urlRequest
         } catch {
+            Logger.log("Failed to create an URL request", level: .error, layer: .infraestructure)
             throw APIError.badRequest(url: requestComponents.path)
         }
     }
