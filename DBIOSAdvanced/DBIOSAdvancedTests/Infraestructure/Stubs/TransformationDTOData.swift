@@ -1,8 +1,8 @@
 import Foundation
 @testable import DBIOSAdvanced
 
-enum TransformationDTOList {
-    static let giveTransformatioDTOList = [
+enum TransformationDTOData {
+    static let givenList = [
         TransformationDTO(
             identifier: "17824501-1106-4815-BC7A-BFDCCEE43CC9",
             name: "1. Oozaru – Gran Mono",
@@ -29,7 +29,7 @@ enum TransformationDTOList {
         ),
         TransformationDTO(
             identifier: "EE4DEC64-1B2D-47C1-A8EA-3208894A57A6",
-            name: "12. Super Saiyan Blue",
+            name: "3. Super Saiyan Blue",
             info: "El Super Saiyan Blue es el resultado de un Super Saiyan God que eleva su poder hasta transformarse en un Super Saiyan God Super Saiyan. Su aspecto es similar al de un Super Saiyan aunque con el cabello azulado y el aura azulada de la que parece que se desprenden cristales a la hora de transformarse, de hecho en el anime de Dragon Ball Super cada vez que Goku o Vegeta se transforman en Super Saiyan Blue se escucha una música divina. Con el Super Saiyan Blue Goku obtiene un total control sobre su Ki y es capaz de regular el nivel de poder a su antojo.",
             photo: "https://areajugones.sport.es/wp-content/uploads/2015/10/super_saiyan_god_super_saiyan__ssgss__goku_by_mikkkiwarrior3-d8wv7hx.jpg",
             hero: HeroDTO(

@@ -1,8 +1,8 @@
 import Foundation
 @testable import DBIOSAdvanced
 
-enum HeroDTOList {
-    static let givenHeroDTOList = [
+enum HeroDTOData {
+    static let givenList = [
         HeroDTO(
             identifier: "D13A40E5-4418-4223-9CE6-D2F9A28EBE94",
             name: "Goku",
