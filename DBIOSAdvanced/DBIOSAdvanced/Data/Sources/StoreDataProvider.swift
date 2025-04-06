@@ -107,17 +107,35 @@ final class StoreDataProvider {
         }
     }
     
-    func fetchTransformations(heroID: String) -> [TransformationEntity] {
-        guard let heroEntity = fetchHeros(identifier: heroID).first else {
-            Logger.log("Hero entities not found in BBDD", level: .error, layer: .repository)
+    func fetchTransformations(heroIdentifier: String) -> [TransformationEntity] {
+        var fetchDescriptor = FetchDescriptor<TransformationEntity>()
+        fetchDescriptor.predicate = #Predicate { $0.hero?.identifier == heroIdentifier }
+        let sortDescriptor = SortDescriptor<TransformationEntity>(\.name, order: .forward)
+        fetchDescriptor.sortBy = [sortDescriptor]
+        
+        do {
+            let transformationEntityList = try modelContext.fetch(fetchDescriptor)
+            return transformationEntityList
+        } catch {
+            Logger.log("Transformation entities not found in BBDD", level: .error, layer: .repository)
             return []
         }
-        
-        return heroEntity.transformations ?? []
     }
     
-    func fetchLocations(heroID: String) -> [LocationEntity] {
-        guard let heroEntity = fetchHeros(identifier: heroID).first else {
+    func fetchTransformation(identifier: String) -> TransformationEntity? {
+        var fetchDescriptor = FetchDescriptor<TransformationEntity>()
+        fetchDescriptor.predicate = #Predicate { $0.identifier == identifier }
+        
+        do {
+            let transformationEntity = try modelContext.fetch(fetchDescriptor).first
+            return transformationEntity
+        } catch {
+            return nil
+        }
+    }
+    
+    func fetchLocations(heroIdentifier: String) -> [LocationEntity] {
+        guard let heroEntity = fetchHeros(identifier: heroIdentifier).first else {
             Logger.log("Hero entities not found in BBDD", level: .error, layer: .repository)
             return []
         }
