@@ -109,7 +109,7 @@ final class APISessionTests: XCTestCase {
         
         // When
         var receivedHeroDTOList: [HeroDTO]?
-        sut?.request(HerosHTTPRequest(), completion: { result in
+        sut?.request(GetHerosHTTPRequest(), completion: { result in
             do {
                 let heroDTOList = try result.get()
                 receivedHeroDTOList = heroDTOList
@@ -139,7 +139,7 @@ final class APISessionTests: XCTestCase {
         
         // When
         var receivedError: APIError?
-        sut?.request(HerosHTTPRequest(), completion: { result in
+        sut?.request(GetHerosHTTPRequest(), completion: { result in
             do {
                 let _ = try result.get()
                 XCTFail("Waiting for error")
@@ -172,7 +172,7 @@ final class APISessionTests: XCTestCase {
         }
         
         // When
-        let herosHTTPRequest = HerosHTTPRequest(name: "Goku")
+        let herosHTTPRequest = GetHerosHTTPRequest(name: "Goku")
         var receivedHeroDTO: HeroDTO?
         sut?.request(herosHTTPRequest, completion: { result in
             do {
@@ -206,7 +206,7 @@ final class APISessionTests: XCTestCase {
         }
         
         // When
-        let herosHTTPRequest = HerosHTTPRequest(name: "Gohan")
+        let herosHTTPRequest = GetHerosHTTPRequest(name: "Gohan")
         var receivedError: APIError?
         sut?.request(herosHTTPRequest, completion: { result in
             do {

@@ -1,6 +1,6 @@
 import Foundation
 
-struct HerosHTTPRequest: HTTPRequestComponents {
+struct GetHerosHTTPRequest: HTTPRequestComponents {
     var path: String = "/api/heros/all"
     var method: HTTPMethod = .POST
     var body: Encodable?
@@ -12,7 +12,7 @@ struct HerosHTTPRequest: HTTPRequestComponents {
     }
 }
 
-extension HerosHTTPRequest {
+extension GetHerosHTTPRequest {
     struct HTTPBoddy: Encodable {
         let name: String
     }
