@@ -1,7 +1,7 @@
 import XCTest
 @testable import DBIOSAdvanced
 
-final class ApiSessionTests: XCTestCase {
+final class APISessionTests: XCTestCase {
     var sut: APISessionProtocol?
 
     override func setUpWithError() throws {
@@ -27,7 +27,7 @@ final class ApiSessionTests: XCTestCase {
             receivedRequest = request
             let url = try XCTUnwrap(request.url)
             let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 200))
-            let fileURL = try XCTUnwrap(Bundle(for: ApiSessionTests.self).url(forResource: "jwt", withExtension: "txt"))
+            let fileURL = try XCTUnwrap(Bundle(for: APISessionTests.self).url(forResource: "jwt", withExtension: "txt"))
             let data = try XCTUnwrap(Data(contentsOf: fileURL))
             return (httpURLResponse, data)
         }
@@ -102,7 +102,7 @@ final class ApiSessionTests: XCTestCase {
             receivedRequest = request
             let url = try XCTUnwrap(request.url)
             let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 200))
-            let fileURL = try XCTUnwrap(Bundle(for: ApiSessionTests.self).url(forResource:"Heros", withExtension: "json"))
+            let fileURL = try XCTUnwrap(Bundle(for: APISessionTests.self).url(forResource:"Heros", withExtension: "json"))
             let data = try XCTUnwrap(Data(contentsOf: fileURL))
             return (httpURLResponse, data)
         }
@@ -166,7 +166,7 @@ final class ApiSessionTests: XCTestCase {
             receivedRequest = request
             let url = try XCTUnwrap(request.url)
             let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 200))
-            let fileURL = try XCTUnwrap(Bundle(for: ApiSessionTests.self).url(forResource: "Hero", withExtension: "json"))
+            let fileURL = try XCTUnwrap(Bundle(for: APISessionTests.self).url(forResource: "Hero", withExtension: "json"))
             let data = try (Data(contentsOf: fileURL))
             return (httpURLResponse, data)
         }
@@ -235,7 +235,7 @@ final class ApiSessionTests: XCTestCase {
             receivedRequest = request
             let url = try XCTUnwrap(request.url)
             let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 200))
-            let fileURL = try XCTUnwrap(Bundle(for: ApiSessionTests.self).url(forResource: "Transformations", withExtension: "json"))
+            let fileURL = try XCTUnwrap(Bundle(for: APISessionTests.self).url(forResource: "Transformations", withExtension: "json"))
             let data = try XCTUnwrap(Data(contentsOf: fileURL))
             return (httpURLResponse, data)
         }
@@ -301,7 +301,7 @@ final class ApiSessionTests: XCTestCase {
             receivedRequest = request
             let url = try XCTUnwrap(request.url)
             let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 200))
-            let fileURL = try XCTUnwrap(Bundle(for: ApiSessionTests.self).url(forResource: "Locations", withExtension: "json"))
+            let fileURL = try XCTUnwrap(Bundle(for: APISessionTests.self).url(forResource: "Locations", withExtension: "json"))
             let data = try XCTUnwrap(Data(contentsOf: fileURL))
             return (httpURLResponse, data)
         }
