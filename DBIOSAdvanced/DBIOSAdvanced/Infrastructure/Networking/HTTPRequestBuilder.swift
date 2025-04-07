@@ -14,7 +14,7 @@ struct HTTPRequestBuilder {
         urlComponents.host = requestComponents.host
         urlComponents.path = requestComponents.path
         
-        if let queryParameters = requestComponents.queryParameters {
+        if let queryParameters = requestComponents.queryParameters, !queryParameters.isEmpty {
             Logger.log("The URL has query params: \(queryParameters)", level: .debug, layer: .infraestructure)
             urlComponents.queryItems = queryParameters.map {
                 URLQueryItem(name: $0.key, value: $0.value)

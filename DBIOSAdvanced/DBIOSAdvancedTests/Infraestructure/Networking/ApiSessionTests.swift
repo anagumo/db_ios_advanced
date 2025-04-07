@@ -19,7 +19,7 @@ final class ApiSessionTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    func testLoginHTTPRequest_ShouldReturnSuccess() throws {
+    func testLoginHTTPRequest() throws {
         // Given
         let successExpectation = expectation(description: "Login succeed")
         var receivedRequest: URLRequest?
@@ -50,6 +50,7 @@ final class ApiSessionTests: XCTestCase {
         
         // Then
         wait(for: [successExpectation], timeout: 0.1)
+        XCTAssertEqual(receivedRequest?.url?.path(), "/api/auth/login")
         XCTAssertEqual(receivedRequest?.httpMethod, "POST")
         XCTAssertEqual(receivedRequest?.value(
             forHTTPHeaderField: "Authorization"), "Basic cmVndWxhcnVzZXJAa2VlcGNvZGluZy5lczpSZWd1bGFydXNlcjE="
@@ -57,7 +58,7 @@ final class ApiSessionTests: XCTestCase {
         XCTAssertNotNil(receivedJWT)
     }
     
-    func testLoginHTTPRequest_ShouldReturnUnauthorizedError() throws {
+    func testLoginHTTPRequest_ShouldReturnError() throws {
         // Given
         let failureExpectation = expectation(description: "Login failed")
         failureExpectation.assertForOverFulfill = true
@@ -91,5 +92,203 @@ final class ApiSessionTests: XCTestCase {
         XCTAssertEqual(unauthorizedAPIError.url, "/api/auth/login")
         XCTAssertEqual(unauthorizedAPIError.reason, "Wrong email or password. Please log in again.")
         XCTAssertEqual(unauthorizedAPIError.statusCode, 401)
+    }
+    
+    func testFetchHeros() throws {
+        // Given
+        let successExpection = expectation(description: "Fetch heros succeed")
+        var receivedRequest: URLRequest?
+        MockURLProtocol.requestHandler = { request in
+            receivedRequest = request
+            let url = try XCTUnwrap(request.url)
+            let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 200))
+            let fileURL = try XCTUnwrap(Bundle(for: ApiSessionTests.self).url(forResource:"Heros", withExtension: "json"))
+            let data = try XCTUnwrap(Data(contentsOf: fileURL))
+            return (httpURLResponse, data)
+        }
+        
+        // When
+        var receivedHeroDTOList: [HeroDTO]?
+        sut?.request(HerosHTTPRequest(), completion: { result in
+            do {
+                let heroDTOList = try result.get()
+                receivedHeroDTOList = heroDTOList
+                successExpection.fulfill()
+            } catch {
+                XCTFail("Waiting for success")
+            }
+        })
+        
+        // Then
+        wait(for: [successExpection], timeout: 0.1)
+        XCTAssertEqual(receivedRequest?.url?.path(), "/api/heros/all")
+        XCTAssertEqual(receivedRequest?.httpMethod, "POST")
+        XCTAssertNotNil(receivedHeroDTOList)
+        XCTAssertEqual(receivedHeroDTOList?.count, 15)
+        XCTAssertEqual(receivedHeroDTOList?.first?.name, "Maestro Roshi")
+    }
+    
+    func testFetchHeros_ShouldReturnError() throws {
+        // Given
+        let failureExpectation = expectation(description: "Fetch heros failed")
+        MockURLProtocol.requestHandler = { request in
+            let url = try XCTUnwrap(request.url)
+            let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 500))
+            return (httpURLResponse, Data())
+        }
+        
+        // When
+        var receivedError: APIError?
+        sut?.request(HerosHTTPRequest(), completion: { result in
+            do {
+                let _ = try result.get()
+                XCTFail("Waiting for error")
+            } catch let error as APIError {
+                receivedError = error
+                failureExpectation.fulfill()
+            } catch {
+                XCTFail("Waiting for api error")
+            }
+        })
+        
+        // Then
+        wait(for: [failureExpectation], timeout: 0.1)
+        XCTAssertNotNil(receivedError)
+        XCTAssertEqual(receivedError?.statusCode, 500)
+        XCTAssertEqual(receivedError?.reason, "There was a server error")
+    }
+    
+    func testFetchTransformations() throws {
+        // Given
+        let successExpectation = expectation(description: "Fetch transformations succeed")
+        var receivedRequest : URLRequest?
+        MockURLProtocol.requestHandler = { request in
+            receivedRequest = request
+            let url = try XCTUnwrap(request.url)
+            let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 200))
+            let fileURL = try XCTUnwrap(Bundle(for: ApiSessionTests.self).url(forResource: "Transformations", withExtension: "json"))
+            let data = try XCTUnwrap(Data(contentsOf: fileURL))
+            return (httpURLResponse, data)
+        }
+        
+        // When
+        var receivedTransformationDTOList: [TransformationDTO]?
+        let transformationsHTTPRequest = TransformationsHTTPRequest(heroID: "5809A7BC-DE77-4DA4-939B-D5F4EB00FAA")
+        sut?.request(transformationsHTTPRequest, completion: { result in
+            do {
+                let transformationDTOList = try result.get()
+                receivedTransformationDTOList = transformationDTOList
+                successExpectation.fulfill()
+            } catch {
+                XCTFail("Waiting for success")
+            }
+        })
+        
+        // Then
+        wait(for: [successExpectation], timeout: 0.1)
+        XCTAssertEqual(receivedRequest?.url?.path(), "/api/heros/tranformations")
+        XCTAssertEqual(receivedRequest?.httpMethod, "POST")
+        XCTAssertNotNil(receivedTransformationDTOList)
+        XCTAssertEqual(receivedTransformationDTOList?.count, 14)
+        XCTAssertEqual(receivedTransformationDTOList?.first?.name, "1. Oozaru – Gran Mono")
+    }
+    
+    func testFetchTransformations_ShouldReturnError() throws {
+        // Given
+        let failureExpectation = expectation(description: "Fetch transformations failed")
+        MockURLProtocol.requestHandler = { request in
+            let url = try XCTUnwrap(request.url)
+            let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 500))
+            return (httpURLResponse, Data())
+        }
+        
+        // When
+        var receivedError: APIError?
+        let transformationsHTTPRequest = TransformationsHTTPRequest(heroID: "5809A7BC-DE77-4DA4-939B-D5F4EB00FAA")
+        sut?.request(transformationsHTTPRequest, completion: { result in
+            do {
+                let _ = try result.get()
+                XCTFail("Waiting for error")
+            } catch let error as APIError {
+                receivedError = error
+                failureExpectation.fulfill()
+            } catch {
+                XCTFail("Waiting for api error")
+            }
+        })
+        
+        // Then
+        wait(for: [failureExpectation], timeout: 0.1)
+        XCTAssertNotNil(receivedError)
+        XCTAssertEqual(receivedError?.statusCode, 500)
+        XCTAssertEqual(receivedError?.reason, "There was a server error")
+    }
+    
+    func testFetchLocations() throws {
+        // Given
+        let successExpectation = expectation(description: "Fetch locations succeed")
+        var receivedRequest: URLRequest?
+        MockURLProtocol.requestHandler = { request in
+            receivedRequest = request
+            let url = try XCTUnwrap(request.url)
+            let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 200))
+            let fileURL = try XCTUnwrap(Bundle(for: ApiSessionTests.self).url(forResource: "Locations", withExtension: "json"))
+            let data = try XCTUnwrap(Data(contentsOf: fileURL))
+            return (httpURLResponse, data)
+        }
+        
+        // When
+        var receivedLocationDTOList: [LocationDTO]?
+        let locationsHTTPRequest = LocationsHTTPRequest(heroID: "CBCFBDEC-F89B-41A1-AC0A-FBDA66A33A06")
+        sut?.request(locationsHTTPRequest, completion: { result in
+            do {
+                let locationDTOList = try result.get()
+                receivedLocationDTOList = locationDTOList
+                successExpectation.fulfill()
+            } catch {
+                XCTFail("Waiting for success")
+            }
+        })
+        
+        // Then
+        wait(for: [successExpectation], timeout: 0.1)
+        XCTAssertNotNil(receivedRequest)
+        XCTAssertEqual(receivedRequest?.url?.path(), "/api/heros/locations")
+        XCTAssertEqual(receivedRequest?.httpMethod, "POST")
+        XCTAssertNotNil(receivedLocationDTOList)
+        XCTAssertEqual(receivedLocationDTOList?.count, 1)
+        XCTAssertEqual(receivedLocationDTOList?.first?.latitude, "36.1251954")
+        XCTAssertEqual(receivedLocationDTOList?.first?.longitude, "-115.3154276")
+    }
+    
+    func testFetchLocations_ShoulReturnError() throws {
+        //Given
+        let failureExpectation = expectation(description: "Fetch locations failed")
+        MockURLProtocol.requestHandler = { request in
+            let url = try XCTUnwrap(request.url)
+            let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 500))
+            return (httpURLResponse, Data())
+        }
+        
+        // When
+        let locationsHTTPRequest = LocationsHTTPRequest(heroID: "CBCFBDEC-F89B-41A1-AC0A-FBDA66A33A06")
+        var receivedError: APIError?
+        sut?.request(locationsHTTPRequest, completion: { result in
+            do {
+                let _ = try result.get()
+                XCTFail("Waiting for error")
+            } catch let error as APIError {
+                receivedError = error
+                failureExpectation.fulfill()
+            } catch {
+                XCTFail("Waiting for api error")
+            }
+        })
+        
+        // Then
+        wait(for: [failureExpectation], timeout: 0.1)
+        XCTAssertNotNil(receivedError)
+        XCTAssertEqual(receivedError?.statusCode, 500)
+        XCTAssertEqual(receivedError?.reason, "There was a server error")
     }
 }

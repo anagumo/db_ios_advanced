@@ -18,12 +18,13 @@ final class HTTPRequestInterceptor: HTTPRequestInterceptorProtocol {
     }
     
     func intercept(_ request: inout URLRequest, authorized: Bool) {
+        guard authorized else {
+            Logger.log("The endpoint does not require authorization", level: .info, layer: .infraestructure)
+            return
+        }
+        
         guard let jwt = sessionLocalDataSource.get(), authorized else {
-            if authorized {
-                Logger.log("JWT expired", level: .notice, layer: .infraestructure)
-            } else {
-                Logger.log("The endpoint does not require Authorization", level: .info, layer: .infraestructure)
-            }
+            Logger.log("JWT expired", level: .notice, layer: .infraestructure)
             return
         }
         
