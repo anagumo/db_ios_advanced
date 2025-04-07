@@ -15,7 +15,7 @@ final class SessionLocalDataSource: SessionLocalDataSourceProtocol {
     
     func get() -> String? {
         Logger.log("JWT provided to perform an authorized network request", level: .trace, layer: .repository)
-        return "eyJ0eXAiOiJKV1QiLCJraWQiOiJwcml2YXRlIiwiYWxnIjoiSFMyNTYifQ.eyJlbWFpbCI6ImFyaW5hZ3Vtb0BnbWFpbC5jb20iLCJleHBpcmF0aW9uIjo2NDA5MjIxMTIwMCwiaWRlbnRpZnkiOiIyNTc5QzlGNy1BMkVDLTREQUYtQTVGRC0zNzVGN0UwODU1QTgifQ.kzN1Wapf1Rcguxd1losZANHnyEiAxCnkX8tyISp9Dfg"
+        return keychainSwift.get(jwtKey)
     }
     
     func set(_ jwt: Data) {

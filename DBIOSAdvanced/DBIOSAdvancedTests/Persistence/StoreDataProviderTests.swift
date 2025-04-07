@@ -183,7 +183,7 @@ final class StoreDataProviderTests: XCTestCase {
     func testInsertLocations() throws {
         // Given
         let heroDTOList = HeroDTOData.givenList
-        let locationDTOList = LocationDTOList.giveLocationDTOList
+        let locationDTOList = LocationDTOData.givenList
         
         // When
         sut?.insertHeros(heroDTOList)
@@ -204,7 +204,7 @@ final class StoreDataProviderTests: XCTestCase {
     func testFetchLocations() throws {
         // Given
         let heroDTOList = HeroDTOData.givenList
-        let locationDTOList = LocationDTOList.giveLocationDTOList
+        let locationDTOList = LocationDTOData.givenList
         let heroDTO = try XCTUnwrap(heroDTOList.filter { $0.name == "Piccolo" }.first)
         
         // When
@@ -232,5 +232,28 @@ final class StoreDataProviderTests: XCTestCase {
         // Then
         XCTAssertEqual(locationEntityList?.count, 0)
         XCTAssertNil(locationEntityList?.first)
+    }
+    
+    func testClearBBDD() throws {
+        // Given
+        let heroDTOList = HeroDTOData.givenList
+        let locationDTOList = LocationDTOData.givenList
+        
+        // When
+        sut?.insertHeros(heroDTOList)
+        sut?.insertLocations(locationDTOList)
+        let heroEntityListBefore = try XCTUnwrap(sut?.fetchHeros())
+        let locationEntityListBefore = try XCTUnwrap(sut?.fetchLocations(heroIdentifier: "CBCFBDEC-F89B-41A1-AC0A-FBDA66A33A06"))
+        sut?.clearBBDD()
+        let heroEntityListAfter = try XCTUnwrap(sut?.fetchHeros())
+        let locationEntityListAfter = try XCTUnwrap(sut?.fetchLocations(heroIdentifier: "CBCFBDEC-F89B-41A1-AC0A-FBDA66A33A06"))
+        
+        // Then
+        XCTAssertNotEqual(heroEntityListBefore.count, heroEntityListAfter.count)
+        XCTAssertEqual(heroEntityListBefore.count, 5, "Heros before clear")
+        XCTAssertEqual(heroEntityListAfter.count, 0, "Heros after clear")
+        XCTAssertNotEqual(locationEntityListBefore.count, locationEntityListAfter.count)
+        XCTAssertEqual(locationEntityListBefore.count, 1, "Locations before clear")
+        XCTAssertEqual(locationEntityListAfter.count, 0, "Locations after clear")
     }
 }

@@ -28,6 +28,7 @@ final class HTTPRequestInterceptor: HTTPRequestInterceptorProtocol {
             return
         }
         
+        Logger.log("Bearer token created: \(jwt)", level: .trace, layer: .infraestructure)
         request.setValue("Bearer \(jwt)", forHTTPHeaderField: "Authorization")
     }
 }

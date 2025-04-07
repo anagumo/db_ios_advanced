@@ -158,6 +158,75 @@ final class ApiSessionTests: XCTestCase {
         XCTAssertEqual(receivedError?.reason, "There was a server error")
     }
     
+    func testFetchHero() throws {
+        // Given
+        let successExpectation = expectation(description: "Fetch hero succeed")
+        var receivedRequest: URLRequest?
+        MockURLProtocol.requestHandler = { request in
+            receivedRequest = request
+            let url = try XCTUnwrap(request.url)
+            let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 200))
+            let fileURL = try XCTUnwrap(Bundle(for: ApiSessionTests.self).url(forResource: "Hero", withExtension: "json"))
+            let data = try (Data(contentsOf: fileURL))
+            return (httpURLResponse, data)
+        }
+        
+        // When
+        let herosHTTPRequest = HerosHTTPRequest(name: "Goku")
+        var receivedHeroDTO: HeroDTO?
+        sut?.request(herosHTTPRequest, completion: { result in
+            do {
+                let heroDTO = try result.get().first
+                receivedHeroDTO = heroDTO
+                successExpectation.fulfill()
+            } catch {
+                XCTFail("Waiting for success")
+            }
+        })
+        
+        // Then
+        wait(for: [successExpectation], timeout: 0.1)
+        XCTAssertEqual(receivedRequest?.url?.path(), "/api/heros/all")
+        XCTAssertEqual(receivedRequest?.httpMethod, "POST")
+        XCTAssertNotNil(receivedHeroDTO)
+        XCTAssertEqual(receivedHeroDTO?.identifier, "D13A40E5-4418-4223-9CE6-D2F9A28EBE94")
+        XCTAssertEqual(receivedHeroDTO?.name, "Goku")
+        XCTAssertEqual(receivedHeroDTO?.info, "Sobran las presentaciones cuando se habla de Goku. El Saiyan fue enviado al planeta Tierra, pero hay dos versiones sobre el origen del personaje. Según una publicación especial, cuando Goku nació midieron su poder y apenas llegaba a dos unidades, siendo el Saiyan más débil. Aun así se pensaba que le bastaría para conquistar el planeta. Sin embargo, la versión más popular es que Freezer era una amenaza para su planeta natal y antes de que fuera destruido, se envió a Goku en una incubadora para salvarle.")
+        XCTAssertEqual(receivedHeroDTO?.photo, "https://cdn.alfabetajuega.com/alfabetajuega/2020/12/goku1.jpg?width=300")
+        XCTAssertEqual(receivedHeroDTO?.favorite, true)
+    }
+    
+    func testFetchHero_ShouldReturnError() throws {
+        // Given
+        let failureExpectation = expectation(description: "Fetch hero failed")
+        MockURLProtocol.requestHandler = { request in
+            let url = try XCTUnwrap(request.url)
+            let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url, statusCode: 500))
+            return (httpURLResponse, Data())
+        }
+        
+        // When
+        let herosHTTPRequest = HerosHTTPRequest(name: "Gohan")
+        var receivedError: APIError?
+        sut?.request(herosHTTPRequest, completion: { result in
+            do {
+                let _ = try result.get()
+                XCTFail("Waiting for error")
+            } catch let error as APIError {
+                receivedError = error
+                failureExpectation.fulfill()
+            } catch {
+                XCTFail("Waiting for api error")
+            }
+        })
+        
+        // Then
+        wait(for: [failureExpectation], timeout: 0.1)
+        XCTAssertNotNil(receivedError)
+        XCTAssertEqual(receivedError?.statusCode, 500)
+        XCTAssertEqual(receivedError?.reason, "There was a server error")
+    }
+    
     func testFetchTransformations() throws {
         // Given
         let successExpectation = expectation(description: "Fetch transformations succeed")
