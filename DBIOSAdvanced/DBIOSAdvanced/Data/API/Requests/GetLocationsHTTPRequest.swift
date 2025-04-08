@@ -1,18 +1,18 @@
 import Foundation
 
-struct LocationsHTTPRequest: HTTPRequestComponents {
+struct GetLocationsHTTPRequest: HTTPRequestComponents {
     var path: String = "/api/heros/locations"
     var method: HTTPMethod = .POST
     var body: Encodable?
     var authorized: Bool = true
     typealias Response = [LocationDTO]
     
-    init(heroID: String) {
-        body = HTTPBody(id: heroID)
+    init(heroIdentifier: String) {
+        body = HTTPBody(id: heroIdentifier)
     }
 }
 
-extension LocationsHTTPRequest {
+extension GetLocationsHTTPRequest {
     struct HTTPBody: Encodable {
         let id: String
     }

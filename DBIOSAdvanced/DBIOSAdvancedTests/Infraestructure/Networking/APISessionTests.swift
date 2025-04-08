@@ -308,7 +308,7 @@ final class APISessionTests: XCTestCase {
         
         // When
         var receivedLocationDTOList: [LocationDTO]?
-        let locationsHTTPRequest = LocationsHTTPRequest(heroID: "CBCFBDEC-F89B-41A1-AC0A-FBDA66A33A06")
+        let locationsHTTPRequest = GetLocationsHTTPRequest(heroIdentifier: "CBCFBDEC-F89B-41A1-AC0A-FBDA66A33A06")
         sut?.request(locationsHTTPRequest, completion: { result in
             do {
                 let locationDTOList = try result.get()
@@ -340,7 +340,7 @@ final class APISessionTests: XCTestCase {
         }
         
         // When
-        let locationsHTTPRequest = LocationsHTTPRequest(heroID: "CBCFBDEC-F89B-41A1-AC0A-FBDA66A33A06")
+        let locationsHTTPRequest = GetLocationsHTTPRequest(heroIdentifier: "CBCFBDEC-F89B-41A1-AC0A-FBDA66A33A06")
         var receivedError: APIError?
         sut?.request(locationsHTTPRequest, completion: { result in
             do {

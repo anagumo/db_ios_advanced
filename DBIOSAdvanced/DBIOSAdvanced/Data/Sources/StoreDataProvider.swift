@@ -148,7 +148,7 @@ final class StoreDataProvider {
     
     func fetchLocations(heroIdentifier: String) -> [LocationEntity] {
         guard let heroEntity = fetchHero(identifier: heroIdentifier) else {
-            Logger.log("Hero entity not found in BBDD", level: .error, layer: .repository)
+            Logger.log("Location entities not found in BBDD", level: .error, layer: .repository)
             return []
         }
         return heroEntity.locations ?? []
