@@ -29,14 +29,11 @@ final class GetHerosUseCase: GetHerosUseCaseProtocol {
                         return
                     }
                     
-                    // Is Swift concurrency allowed?
-                    Task { @MainActor in
+                    DispatchQueue.main.async {
                         self?.storeDataProvider.insertHeros(heroDTOList)
+                        Logger.log("Get heros succeed from remote", level: .info, layer: .domain)
+                        completion(.success(self?.getFromLocal() ?? []))
                     }
-                    
-                    let heroList = heroDTOList.map { HeroDTOtoDomainMapper().map($0) }
-                    Logger.log("Get heros succeed from remote", level: .info, layer: .domain)
-                    completion(.success(heroList))
                 } catch let error as APIError {
                     Logger.log("Get heros failed: \(error.reason)", level: .error, layer: .domain)
                     completion(.failure(.network(error.reason)))
