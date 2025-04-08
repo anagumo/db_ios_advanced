@@ -30,7 +30,7 @@ final class SplashViewModelTests: XCTestCase {
                 loadingExpectation.fulfill()
             case .login:
                 loginExpectation.fulfill()
-            case .logged:
+            case .home:
                 XCTFail("Waiting for login")
             }
         }
@@ -40,10 +40,10 @@ final class SplashViewModelTests: XCTestCase {
         wait(for: [loadingExpectation, loginExpectation], timeout: 5)
     }
     
-    func testSplash_WhenStateIsLogged() throws {
+    func testSplash_WhenStateIsHome() throws {
         // Given
         let loadingExpectation = expectation(description: "Loading state succeed")
-        let loggedExpectation = expectation(description: "Logged state succeed")
+        let homeExpectation = expectation(description: "Home state succeed")
         let fileURL = try XCTUnwrap(Bundle(for: SplashViewModelTests.self).url(forResource: "jwt", withExtension: "txt"))
         let data = try XCTUnwrap(Data(contentsOf: fileURL))
         mockSessionLocalDataSource.set(data)
@@ -54,14 +54,14 @@ final class SplashViewModelTests: XCTestCase {
             case .loading:
                 loadingExpectation.fulfill()
             case .login:
-                XCTFail("Waiting for logged")
-            case .logged:
-                loggedExpectation.fulfill()
+                XCTFail("Waiting for home")
+            case .home:
+                homeExpectation.fulfill()
             }
         }
         sut.load()
         
         // Then
-        wait(for: [loadingExpectation, loggedExpectation], timeout: 5)
+        wait(for: [loadingExpectation, homeExpectation], timeout: 5)
     }
 }

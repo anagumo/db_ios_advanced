@@ -5,7 +5,7 @@ import OSLog
 enum SplashState: Equatable {
     case loading
     case login
-    case logged
+    case home
 }
 
 protocol SplashViewModelProtocol {
@@ -13,8 +13,8 @@ protocol SplashViewModelProtocol {
 }
 
 final class SplashViewModel: SplashViewModelProtocol {
-    let onStateChanged = Binding<SplashState>()
     private let sessionLocalDataSource: SessionLocalDataSourceProtocol
+    let onStateChanged = Binding<SplashState>()
     
     init(sessionLocalDataSource: SessionLocalDataSourceProtocol) {
         self.sessionLocalDataSource = sessionLocalDataSource
@@ -31,7 +31,7 @@ final class SplashViewModel: SplashViewModelProtocol {
                 self?.onStateChanged.update(.login)
             } else {
                 Logger.log("Session found, call to heros", level: .trace, layer: .presentation)
-                self?.onStateChanged.update(.logged)
+                self?.onStateChanged.update(.home)
             }
         }
     }
