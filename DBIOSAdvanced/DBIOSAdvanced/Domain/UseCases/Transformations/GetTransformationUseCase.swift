@@ -5,7 +5,7 @@ protocol GetTransformationUseCaseProtocol {
     func run(identifer: String, completion: @escaping (Result<Transformation, AppError>) -> Void)
 }
 
-final class TransformationUseCase: GetTransformationUseCaseProtocol {
+final class GetTransformationUseCase: GetTransformationUseCaseProtocol {
     private let storeDataProvider: StoreDataProvider
     
     init(storeDataProvider: StoreDataProvider) {

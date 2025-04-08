@@ -129,7 +129,7 @@ final class StoreDataProviderTests: XCTestCase {
         XCTAssertNotNil(transformationEntityList?.first)
         XCTAssertEqual(transformationEntityList?.first?.identifier, "17824501-1106-4815-BC7A-BFDCCEE43CC9")
         XCTAssertEqual(transformationEntityList?.first?.name, "1. Oozaru – Gran Mono")
-        XCTAssertEqual(transformationEntityList?.first?.photo, "https://areajugones.sport.es/wp-content/uploads/2017/05/Goku_Kaio-Ken_Coolers_Revenge.jpg")
+        XCTAssertEqual(transformationEntityList?.first?.photo, "https://areajugones.sport.es/wp-content/uploads/2021/05/ozarru.jpg.webp")
         XCTAssertEqual(transformationEntityList?.first?.hero?.identifier, "D13A40E5-4418-4223-9CE6-D2F9A28EBE94")
     }
     

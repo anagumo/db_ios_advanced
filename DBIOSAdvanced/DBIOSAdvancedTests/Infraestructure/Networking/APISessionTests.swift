@@ -242,7 +242,7 @@ final class APISessionTests: XCTestCase {
         
         // When
         var receivedTransformationDTOList: [TransformationDTO]?
-        let transformationsHTTPRequest = GetTransformationsHTTPRequest(heroID: "5809A7BC-DE77-4DA4-939B-D5F4EB00FAA")
+        let transformationsHTTPRequest = GetTransformationsHTTPRequest(heroIdentifier: "5809A7BC-DE77-4DA4-939B-D5F4EB00FAA")
         sut?.request(transformationsHTTPRequest, completion: { result in
             do {
                 let transformationDTOList = try result.get()
@@ -273,7 +273,7 @@ final class APISessionTests: XCTestCase {
         
         // When
         var receivedError: APIError?
-        let transformationsHTTPRequest = GetTransformationsHTTPRequest(heroID: "5809A7BC-DE77-4DA4-939B-D5F4EB00FAA")
+        let transformationsHTTPRequest = GetTransformationsHTTPRequest(heroIdentifier: "5809A7BC-DE77-4DA4-939B-D5F4EB00FAA")
         sut?.request(transformationsHTTPRequest, completion: { result in
             do {
                 let _ = try result.get()

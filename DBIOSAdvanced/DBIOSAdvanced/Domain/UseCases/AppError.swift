@@ -1,6 +1,6 @@
 import Foundation
 
-struct AppError: Error {
+struct AppError: Error, Equatable {
     let reason: String
 }
 
@@ -8,13 +8,13 @@ extension AppError {
     /// Describes an empty hero list error
     /// - Returns: an object of type (`AppError`) that encapsulate an error message
     static func emptyList() -> Self {
-        AppError(reason: "Empty list")
+        AppError(reason: "Empty entity list")
     }
     
     /// Describes an empty hero error
     /// - Returns: an object of type (`AppError`) that encapsulate an error message
     static func notFound() -> Self {
-        AppError(reason: "Not found")
+        AppError(reason: "Entity not found")
     }
     
     /// Describes a network error in the api client
