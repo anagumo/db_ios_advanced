@@ -13,7 +13,6 @@ final class GetHerosUseCaseTests: XCTestCase {
         let mockURLSession = URLSession(configuration: urlSessionConfiguration)
         let mockAPISession = APISession(urlSession: mockURLSession)
         mockStoreDataProvider = StoreDataProvider(persistenceType: .memory)
-        
         sut = GetHerosUseCase(
             storeDataProvider: mockStoreDataProvider,
             apiSession: mockAPISession)
@@ -100,5 +99,68 @@ final class GetHerosUseCaseTests: XCTestCase {
         XCTAssertEqual(hero.info, "Sobran las presentaciones cuando se habla de Bulma.")
         XCTAssertEqual(hero.photo, "https://cdn.alfabetajuega.com/alfabetajuega/2021/01/Bulma-Dragon-Ball.jpg?width=300")
         XCTAssertEqual(hero.favorite, false)
+    }
+    
+    func testGetHeros_WhenHeroNameIsNotEmpty_ShouldSucceed() throws {
+        // Given
+        let successExpectation = expectation(description: "Get hero form remote succeed")
+        MockURLProtocol.requestHandler = { request in
+            let url = try XCTUnwrap(request.url)
+            let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url))
+            let fileURL = try XCTUnwrap(Bundle(for: GetHerosUseCaseTests.self).url(forResource: "Hero", withExtension: "json"))
+            let data = try XCTUnwrap(Data(contentsOf: fileURL))
+            return (httpURLResponse, data)
+        }
+        
+        // When
+        var receivedRespone: Hero?
+        sut.run(name: "Goku") { result in
+            do {
+                let hero = try result.get().first
+                receivedRespone = hero
+                successExpectation.fulfill()
+            } catch {
+                XCTFail("Waiting for success")
+            }
+        }
+        
+        // Then
+        wait(for: [successExpectation], timeout: 0.1)
+        XCTAssertNotNil(receivedRespone)
+        let hero = try XCTUnwrap(receivedRespone)
+        XCTAssertEqual(hero.identifier, "D13A40E5-4418-4223-9CE6-D2F9A28EBE94")
+        XCTAssertEqual(hero.name, "Goku")
+        XCTAssertEqual(hero.info, "Sobran las presentaciones cuando se habla de Goku. El Saiyan fue enviado al planeta Tierra, pero hay dos versiones sobre el origen del personaje. Según una publicación especial, cuando Goku nació midieron su poder y apenas llegaba a dos unidades, siendo el Saiyan más débil. Aun así se pensaba que le bastaría para conquistar el planeta. Sin embargo, la versión más popular es que Freezer era una amenaza para su planeta natal y antes de que fuera destruido, se envió a Goku en una incubadora para salvarle.")
+        XCTAssertEqual(hero.photo, "https://cdn.alfabetajuega.com/alfabetajuega/2020/12/goku1.jpg?width=300")
+        XCTAssertEqual(hero.favorite, true)
+    }
+    
+    func testGetHeros_WhenHeroNameIsNotEmpty_ShouldReturnEmptyError() throws {
+        // Given
+        let failureExpectation = expectation(description: "Get hero form remote failed")
+        MockURLProtocol.requestHandler = { request in
+            let url = try XCTUnwrap(request.url)
+            let httpURLResponse = try XCTUnwrap(MockURLProtocol.httpURLResponse(url: url))
+            let fileURL = try XCTUnwrap(Bundle(for: GetHerosUseCaseTests.self).url(forResource: "EmptyList", withExtension: "json"))
+            let data = try XCTUnwrap(Data(contentsOf: fileURL))
+            return (httpURLResponse, data)
+        }
+        
+        // When
+        var receivedError: HeroError?
+        sut.run(name: "Gohan") { result in // Is well know that Gohan is not in the backend :(
+            do {
+                let _ = try result.get()
+                XCTFail("Waiting for failure")
+            } catch let error as HeroError {
+                receivedError = error
+                failureExpectation.fulfill()
+            } catch {
+                XCTFail("Waiting for hero error")
+            }
+        }
+        
+        wait(for: [failureExpectation], timeout: 0.1)
+        XCTAssertNotNil(receivedError)
     }
 }
