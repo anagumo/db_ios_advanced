@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 /// Represent the screen states
 enum SplashState: Equatable {
@@ -13,9 +14,9 @@ protocol SplashViewModelProtocol {
 
 final class SplashViewModel: SplashViewModelProtocol {
     let onStateChanged = Binding<SplashState>()
-    private let sessionLocalDataSource: SessionLocalDataSource
+    private let sessionLocalDataSource: SessionLocalDataSourceProtocol
     
-    init(sessionLocalDataSource: SessionLocalDataSource) {
+    init(sessionLocalDataSource: SessionLocalDataSourceProtocol) {
         self.sessionLocalDataSource = sessionLocalDataSource
     }
     
@@ -26,8 +27,10 @@ final class SplashViewModel: SplashViewModelProtocol {
         // The Binding generic class makes the switch from Global queue -> Main thread
         DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
             if self?.sessionLocalDataSource.get() == nil {
+                Logger.log("Session not found, call to login", level: .trace, layer: .presentation)
                 self?.onStateChanged.update(.login)
             } else {
+                Logger.log("Session found, call to heros", level: .trace, layer: .presentation)
                 self?.onStateChanged.update(.logged)
             }
         }
