@@ -2,7 +2,7 @@ import Foundation
 import OSLog
 
 protocol GetTransformationsUseCaseProtocol {
-    func run(heroIdentifer: String, completion: @escaping (Result<[Transformation], AppError>) -> Void)
+    func run(heroIdentifer: String, completion: @escaping (Result<[Transformation], PresentationError>) -> Void)
 }
 
 final class TransformationsUseCase: GetTransformationsUseCaseProtocol {
@@ -14,7 +14,7 @@ final class TransformationsUseCase: GetTransformationsUseCaseProtocol {
         self.apiSession = apiSession
     }
     
-    func run(heroIdentifer: String, completion: @escaping (Result<[Transformation], AppError>) -> Void) {
+    func run(heroIdentifer: String, completion: @escaping (Result<[Transformation], PresentationError>) -> Void) {
         let transformationList = getFromLocal(heroIdentifer)
         
         if transformationList.isEmpty {

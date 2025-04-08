@@ -2,7 +2,7 @@ import Foundation
 import OSLog
 
 protocol LoginUseCaseProtocol {
-    func run(username: String, password: String, completion: @escaping (Result<Void, LoginError>) -> Void)
+    func run(username: String, password: String, completion: @escaping (Result<Void, PresentationError>) -> Void)
 }
 
 final class LoginUseCase: LoginUseCaseProtocol {
@@ -14,7 +14,7 @@ final class LoginUseCase: LoginUseCaseProtocol {
         self.sessionLocalDataSource = sessionLocalDataSource
     }
     
-    func run(username: String, password: String, completion: @escaping (Result<Void, LoginError>) -> Void) {
+    func run(username: String, password: String, completion: @escaping (Result<Void, PresentationError>) -> Void) {
         do {
             let username = try RegexLint.validate(data: username, matchWith: .email)
             let password = try RegexLint.validate(data: password, matchWith: .password)
@@ -32,7 +32,7 @@ final class LoginUseCase: LoginUseCaseProtocol {
                     completion(.failure(.network(error.reason)))
                 } catch {
                     Logger.log("Unknown login error", level: .error, layer: .domain)
-                    completion(.failure(LoginError.uknown()))
+                    completion(.failure(.uknown()))
                 }
             }
         } catch let error as RegexLintError {

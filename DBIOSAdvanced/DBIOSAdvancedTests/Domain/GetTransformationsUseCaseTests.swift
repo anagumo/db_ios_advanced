@@ -119,12 +119,12 @@ final class GetTransformationsUseCaseTests: XCTestCase {
         }
         
         // When
-        var receivedError: AppError?
+        var receivedError: PresentationError?
         sut.run(heroIdentifer: "hero.identifier") { result in
             do {
                 let _ = try result.get()
                 XCTFail("Waiting for failure")
-            } catch let error as AppError {
+            } catch let error as PresentationError {
                 receivedError = error
                 failureExpectation.fulfill()
             } catch {

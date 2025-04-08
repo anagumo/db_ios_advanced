@@ -2,7 +2,7 @@ import Foundation
 import OSLog
 
 protocol GetHerosUseCaseProtocol {
-    func run(name: String, completion: @escaping (Result<[Hero], HeroError>) -> Void)
+    func run(name: String, completion: @escaping (Result<[Hero], PresentationError>) -> Void)
 }
 
 final class GetHerosUseCase: GetHerosUseCaseProtocol {
@@ -14,7 +14,7 @@ final class GetHerosUseCase: GetHerosUseCaseProtocol {
         self.apiSession = apiSession
     }
     
-    func run(name: String = "", completion: @escaping (Result<[Hero], HeroError>) -> Void) {
+    func run(name: String = "", completion: @escaping (Result<[Hero], PresentationError>) -> Void) {
         let heroList = getFromLocal()
         
         if heroList.isEmpty {

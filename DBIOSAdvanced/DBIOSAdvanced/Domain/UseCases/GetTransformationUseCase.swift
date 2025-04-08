@@ -2,7 +2,7 @@ import Foundation
 import OSLog
 
 protocol GetTransformationUseCaseProtocol {
-    func run(identifer: String, completion: @escaping (Result<Transformation, AppError>) -> Void)
+    func run(identifer: String, completion: @escaping (Result<Transformation, PresentationError>) -> Void)
 }
 
 final class GetTransformationUseCase: GetTransformationUseCaseProtocol {
@@ -12,7 +12,7 @@ final class GetTransformationUseCase: GetTransformationUseCaseProtocol {
         self.storeDataProvider = storeDataProvider
     }
     
-    func run(identifer: String, completion: @escaping (Result<Transformation, AppError>) -> Void) {
+    func run(identifer: String, completion: @escaping (Result<Transformation, PresentationError>) -> Void) {
         let transformation = getFromLocal(identifer)
         
         if let transformation {

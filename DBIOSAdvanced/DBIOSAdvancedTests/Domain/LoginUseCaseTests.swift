@@ -70,7 +70,7 @@ final class LoginUseCaseTests: XCTestCase {
         }
         
         // When
-        var receivedLoginError: LoginError?
+        var receivedLoginError: PresentationError?
         sut.run(username: "regularuser", password: "Regularuser1") { result in
             switch result {
             case .success:
@@ -97,7 +97,7 @@ final class LoginUseCaseTests: XCTestCase {
         }
         
         // When
-        var receivedLoginError: LoginError?
+        var receivedLoginError: PresentationError?
         sut.run(username: "regularuser@keepcoding.es", password: "12345678") { result in
             switch result {
             case .success:

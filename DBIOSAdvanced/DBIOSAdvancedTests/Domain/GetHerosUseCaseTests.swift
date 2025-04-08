@@ -147,12 +147,12 @@ final class GetHerosUseCaseTests: XCTestCase {
         }
         
         // When
-        var receivedError: HeroError?
+        var receivedError: PresentationError?
         sut.run(name: "Gohan") { result in // Is well know that Gohan is not in the backend :(
             do {
                 let _ = try result.get()
                 XCTFail("Waiting for failure")
-            } catch let error as HeroError {
+            } catch let error as PresentationError {
                 receivedError = error
                 failureExpectation.fulfill()
             } catch {
