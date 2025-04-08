@@ -45,7 +45,7 @@ final class GetTransformationsUseCaseTests: XCTestCase {
         }
         
         // When
-        let localTransformationEntityListBefore = mockStoreDataProvider.fetchLocations(heroIdentifier: heroDTO.identifier)
+        let localTransformationEntityListBefore = mockStoreDataProvider.fetchTransformations(heroIdentifier: heroDTO.identifier)
         var receivedResponse: [Transformation]?
         sut.run(heroIdentifer: heroDTO.identifier) { result in
             do {
