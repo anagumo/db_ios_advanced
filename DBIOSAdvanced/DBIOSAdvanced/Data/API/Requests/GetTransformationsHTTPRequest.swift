@@ -1,18 +1,18 @@
 import Foundation
 
-struct TransformationsHTTPRequest: HTTPRequestComponents {
+struct GetTransformationsHTTPRequest: HTTPRequestComponents {
     var path: String = "/api/heros/tranformations"
     var method: HTTPMethod = .POST
     var body: Encodable?
     var authorized: Bool = true
     typealias Response = [TransformationDTO]
     
-    init(heroID: String) {
-        body = HTTPBody(id: heroID)
+    init(heroIdentifier: String) {
+        body = HTTPBody(id: heroIdentifier)
     }
 }
 
-extension TransformationsHTTPRequest {
+extension GetTransformationsHTTPRequest {
     struct HTTPBody: Encodable {
         let id: String
     }
