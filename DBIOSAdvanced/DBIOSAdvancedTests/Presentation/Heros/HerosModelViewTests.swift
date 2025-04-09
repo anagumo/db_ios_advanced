@@ -13,6 +13,7 @@ final class HerosModelViewTests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
+        mockHerosUseCase = nil
         sut = nil
         try super.tearDownWithError()
     }
@@ -39,7 +40,7 @@ final class HerosModelViewTests: XCTestCase {
         sut.load()
         
         // Then
-        wait(for: [loadingExpectation, readyExpectation], timeout: 5)
+        wait(for: [loadingExpectation, readyExpectation], timeout: 0.1)
         XCTAssert(!sut.getAll().isEmpty)
         XCTAssertEqual(sut.getCount(), 5)
         let hero = try XCTUnwrap(sut.getHero(position: 0))
@@ -71,7 +72,7 @@ final class HerosModelViewTests: XCTestCase {
         sut.load()
         
         // Then
-        wait(for: [loadingExpectation, errorExpectation], timeout: 5)
+        wait(for: [loadingExpectation, errorExpectation], timeout: 0.1)
         XCTAssertEqual(receivedErrorReason, "No data received")
         XCTAssert(sut.getAll().isEmpty)
         XCTAssertEqual(sut.getCount(), 0)
@@ -100,7 +101,7 @@ final class HerosModelViewTests: XCTestCase {
         sut.load()
         
         // Then
-        wait(for: [loadingExpectation, errorExpectation], timeout: 5)
+        wait(for: [loadingExpectation, errorExpectation], timeout: 0.1)
         XCTAssertEqual(receivedErrorReason, "Empty entity list")
         XCTAssert(sut.getAll().isEmpty)
         XCTAssertEqual(sut.getCount(), 0)

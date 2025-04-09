@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 /// Represents a state on the screen
 enum LoginState: Equatable {
@@ -13,10 +14,10 @@ protocol LoginViewModelProtocol {
 }
 
 final class LoginViewModel: LoginViewModelProtocol {
-    private let loginUseCase: LoginUseCase
+    private let loginUseCase: LoginUseCaseProtocol
     var onStateChanged: Binding<LoginState>
     
-    init(loginUseCase: LoginUseCase) {
+    init(loginUseCase: LoginUseCaseProtocol) {
         self.loginUseCase = loginUseCase
         self.onStateChanged = Binding<LoginState>()
     }
@@ -27,12 +28,15 @@ final class LoginViewModel: LoginViewModelProtocol {
         loginUseCase.run(username: username, password: password) { [weak self] result in
             switch result {
             case .success:
+                Logger.log("Login state updated to ready", level: .trace, layer: .presentation)
                 self?.onStateChanged.update(.ready)
             case let .failure(failure):
                 guard let regexLintError = failure.regex else {
+                    Logger.log("Login state updated to full screen error", level: .trace, layer: .presentation)
                     self?.onStateChanged.update(.fullScreenError(failure.reason))
                     return
                 }
+                Logger.log("Login state updated to inline error", level: .trace, layer: .presentation)
                 self?.onStateChanged.update(.inlineError(regexLintError))
             }
         }
