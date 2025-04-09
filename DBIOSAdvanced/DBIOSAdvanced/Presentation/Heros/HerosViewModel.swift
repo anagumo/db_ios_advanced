@@ -5,6 +5,7 @@ import OSLog
 enum HerosState: Equatable {
     case loading
     case ready
+    case logout
     case error(String)
 }
 
@@ -13,15 +14,18 @@ protocol HerosViewModelProtocol {
     func getAll() -> [Hero]
     func getCount() -> Int
     func getHero(position: Int) -> Hero?
+    func logout()
 }
 
 final class HerosViewModel: HerosViewModelProtocol {
     private let herosUseCase: GetHerosUseCaseProtocol
+    private let logoutUseCase: LogoutUseCaseProtocol
     private var heroList: [Hero]
     var onStateChanged = Binding<HerosState>()
     
-    init(herosUseCase: GetHerosUseCaseProtocol) {
+    init(herosUseCase: GetHerosUseCaseProtocol, logoutUseCase: LogoutUseCaseProtocol) {
         self.herosUseCase = herosUseCase
+        self.logoutUseCase = logoutUseCase
         self.heroList = []
     }
     
@@ -58,5 +62,20 @@ final class HerosViewModel: HerosViewModelProtocol {
             return nil
         }
         return heroList[position]
+    }
+    
+    func logout() {
+        onStateChanged.update(.loading)
+        
+        logoutUseCase.run { [weak self] result in
+            switch result {
+            case .success:
+                Logger.log("Home state updated to logout", level: .trace, layer: .presentation)
+                self?.onStateChanged.update(.logout)
+            case .failure(let error):
+                Logger.log("Home state updated to logout error", level: .error, layer: .presentation)
+                self?.onStateChanged.update(.error(error.reason))
+            }
+        }
     }
 }

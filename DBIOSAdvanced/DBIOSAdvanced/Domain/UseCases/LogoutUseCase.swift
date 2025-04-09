@@ -20,6 +20,7 @@ final class LogoutUseCase: LogoutUseCaseProtocol {
         }
         
         sessionLocalDataSource.clear()
+        Logger.log("User session cleaned", level: .trace, layer: .domain)
         completion(.success(()))
     }
 }

@@ -5,15 +5,21 @@ import XCTest
 final class HerosModelViewTests: XCTestCase {
     var sut: HerosViewModel!
     var mockHerosUseCase: MockHerosUseCase!
+    var mockLogoutUseCase: MockLogoutUseCase!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         mockHerosUseCase = MockHerosUseCase()
-        sut = HerosViewModel(herosUseCase: mockHerosUseCase)
+        mockLogoutUseCase = MockLogoutUseCase()
+        sut = HerosViewModel(
+            herosUseCase: mockHerosUseCase,
+            logoutUseCase: mockLogoutUseCase
+        )
     }
     
     override func tearDownWithError() throws {
         mockHerosUseCase = nil
+        mockLogoutUseCase = nil
         sut = nil
         try super.tearDownWithError()
     }
@@ -33,7 +39,7 @@ final class HerosModelViewTests: XCTestCase {
                 loadingExpectation.fulfill()
             case .ready:
                 readyExpectation.fulfill()
-            case .error:
+            default:
                 XCTFail("Waiting for ready")
             }
         }
@@ -62,7 +68,7 @@ final class HerosModelViewTests: XCTestCase {
             switch state {
             case .loading:
                 loadingExpectation.fulfill()
-            case .ready:
+            case .ready, .logout:
                 XCTFail("Waiting for error")
             case .error(let reason):
                 receivedErrorReason = reason
@@ -91,7 +97,7 @@ final class HerosModelViewTests: XCTestCase {
             switch state {
             case .loading:
                 loadingExpectation.fulfill()
-            case .ready:
+            case .ready, .logout:
                 XCTFail("Waiting for error")
             case .error(let reason):
                 receivedErrorReason = reason
@@ -106,5 +112,56 @@ final class HerosModelViewTests: XCTestCase {
         XCTAssert(sut.getAll().isEmpty)
         XCTAssertEqual(sut.getCount(), 0)
         XCTAssertNil(sut.getHero(position: 0))
+    }
+    
+    func testHome_WhenStateIsLogout() throws {
+        // Given
+        let loadingExpectation = expectation(description: "Loading state succeed")
+        let logoutExpectation = expectation(description: "Logout state succeed")
+        let urlFile = try XCTUnwrap(Bundle(for: LogoutUseCaseTests.self).url(forResource: "jwt", withExtension: "txt"))
+        let jwtData = try XCTUnwrap(Data(contentsOf: urlFile))
+        mockLogoutUseCase.receivedData = jwtData
+        
+        // When
+        sut.onStateChanged.bind { result in
+            switch result {
+            case .loading:
+                loadingExpectation.fulfill()
+            case .ready, .error:
+                XCTFail("Waiting for logout state")
+            case .logout:
+                logoutExpectation.fulfill()
+            }
+        }
+        sut.logout()
+        
+        // Then
+        wait(for: [loadingExpectation, logoutExpectation], timeout: 0.1)
+    }
+    
+    func testHome_WhenStateIsSessionError() throws {
+        // Given
+        let loadingExpectation = expectation(description: "Loading state succeed")
+        let failureExpectation = expectation(description: "Logout state succeed")
+        
+        // When
+        var receivedError: String?
+        sut.onStateChanged.bind { result in
+            switch result {
+            case .loading:
+                loadingExpectation.fulfill()
+            case .ready, .logout:
+                XCTFail("Waiting for session error state")
+            case let .error(errorMessage):
+                receivedError = errorMessage
+                failureExpectation.fulfill()
+            }
+        }
+        sut.logout()
+        
+        // Then
+        wait(for: [loadingExpectation, failureExpectation], timeout: 0.1)
+        XCTAssertNotNil(receivedError)
+        XCTAssertEqual(receivedError, "Session not found")
     }
 }
