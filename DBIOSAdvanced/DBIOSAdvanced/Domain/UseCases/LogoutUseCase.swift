@@ -6,9 +6,9 @@ protocol LogoutUseCaseProtocol {
 }
 
 final class LogoutUseCase: LogoutUseCaseProtocol {
-    private let sessionLocalDataSource: SessionLocalDataSource
+    private let sessionLocalDataSource: SessionLocalDataSourceProtocol
     
-    init(sessionLocalDataSource: SessionLocalDataSource) {
+    init(sessionLocalDataSource: SessionLocalDataSourceProtocol) {
         self.sessionLocalDataSource = sessionLocalDataSource
     }
     
@@ -20,5 +20,6 @@ final class LogoutUseCase: LogoutUseCaseProtocol {
         }
         
         sessionLocalDataSource.clear()
+        completion(.success(()))
     }
 }
