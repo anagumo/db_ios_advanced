@@ -27,10 +27,10 @@ final class SplashViewModel: SplashViewModelProtocol {
         // The Binding generic class makes the switch from Global queue -> Main thread
         DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
             if self?.sessionLocalDataSource.get() == nil {
-                Logger.log("Session not found, call to login", level: .trace, layer: .presentation)
+                Logger.log("Splash state updated to login", level: .trace, layer: .presentation)
                 self?.onStateChanged.update(.login)
             } else {
-                Logger.log("Session found, call to heros", level: .trace, layer: .presentation)
+                Logger.log("Splash state updated to home", level: .trace, layer: .presentation)
                 self?.onStateChanged.update(.home)
             }
         }
