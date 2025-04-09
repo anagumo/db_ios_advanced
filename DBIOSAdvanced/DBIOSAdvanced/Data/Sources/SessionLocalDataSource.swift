@@ -14,7 +14,7 @@ final class SessionLocalDataSource: SessionLocalDataSourceProtocol {
     private let jwtKey = "jwt"
     
     func get() -> String? {
-        Logger.log("JWT provided to perform an authorized network request", level: .trace, layer: .repository)
+        Logger.log("JWT requested to validate session or perform an authorized network call", level: .trace, layer: .repository)
         return keychainSwift.get(jwtKey)
     }
     

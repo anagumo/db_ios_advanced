@@ -52,3 +52,8 @@ This time, I took the time to write a unit test after each piece of code I creat
 
 Basically, I was validating if there was an error for a successful response, this really helped me save time and anticipate the error when I started making requests:
 ![](Images/apiSessionFixed.png)
+
+In general, I used OSLog to monitor the behavior of each event and created mock and stubs data to test every API session, use case, and view model:
+![](Images/logger+testing.png)
+
+In summary, initiating the project by building from the outline layers proved to be more efficient in my experience, as relying on the UI often slows down the process due to the iOS simulator's load time. I now feel confident that when it's time to implement the UI, all components will integrate seamlessly.

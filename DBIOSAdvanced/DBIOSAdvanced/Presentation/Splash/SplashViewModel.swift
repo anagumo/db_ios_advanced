@@ -9,12 +9,13 @@ enum SplashState: Equatable {
 }
 
 protocol SplashViewModelProtocol {
+    var onStateChanged: Binding<SplashState> { get }
     func load()
 }
 
 final class SplashViewModel: SplashViewModelProtocol {
     private let sessionLocalDataSource: SessionLocalDataSourceProtocol
-    let onStateChanged = Binding<SplashState>()
+    private(set) var onStateChanged = Binding<SplashState>()
     
     init(sessionLocalDataSource: SessionLocalDataSourceProtocol) {
         self.sessionLocalDataSource = sessionLocalDataSource
