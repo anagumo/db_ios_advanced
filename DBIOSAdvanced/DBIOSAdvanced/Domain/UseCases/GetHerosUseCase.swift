@@ -18,7 +18,7 @@ final class GetHerosUseCase: GetHerosUseCaseProtocol {
     }
     
     func run(name: String = "", completion: @escaping (Result<[Hero], PresentationError>) -> Void) {
-        let heroList = getFromLocal()
+        let heroList = getFromLocal(name)
         
         if heroList.isEmpty {
             let getHerosHTTPRequest = GetHerosHTTPRequest(name: name)
@@ -35,7 +35,7 @@ final class GetHerosUseCase: GetHerosUseCaseProtocol {
                     DispatchQueue.main.async {
                         self?.storeDataProvider.insertHeros(heroDTOList)
                         Logger.log("Get heros succeed from remote", level: .info, layer: .domain)
-                        completion(.success(self?.getFromLocal() ?? []))
+                        completion(.success(self?.getFromLocal(name) ?? []))
                     }
                 } catch let error as APIError {
                     Logger.log("Get heros failed: \(error.reason)", level: .error, layer: .domain)
@@ -51,9 +51,17 @@ final class GetHerosUseCase: GetHerosUseCaseProtocol {
         }
     }
     
-    private func getFromLocal() -> [Hero] {
-        storeDataProvider
-            .fetchHeros()
-            .map { HeroEntityToDomainMapper().map($0) }
+    private func getFromLocal(_ name: String) -> [Hero] {
+        if name.isEmpty {
+            return storeDataProvider
+                .fetchHeros()
+                .map { HeroEntityToDomainMapper().map($0) }
+        } else {
+            guard let heroEntity = storeDataProvider.fetchHero(name: name) else {
+                return []
+            }
+            
+            return [HeroEntityToDomainMapper().map(heroEntity)]
+        }
     }
 }
