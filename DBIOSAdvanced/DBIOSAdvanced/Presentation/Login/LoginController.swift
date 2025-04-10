@@ -59,7 +59,9 @@ class LoginController: UIViewController {
     
     private func renderReady() {
         loginButton.configuration?.showsActivityIndicator = false
-        // TODO: Build Home
+        usernameTextField.text = ""
+        passwordTextField.text = ""
+        present(HerosBuilder().build(), animated: true)
     }
     
     private func renderFullScreenError(_ errorMessage: String) {

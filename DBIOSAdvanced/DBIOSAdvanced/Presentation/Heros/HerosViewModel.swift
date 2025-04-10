@@ -10,6 +10,7 @@ enum HerosState: Equatable {
 }
 
 protocol HerosViewModelProtocol {
+    var onStateChanged: Binding<HerosState> { get }
     func load()
     func getAll() -> [Hero]
     func getCount() -> Int
@@ -21,7 +22,7 @@ final class HerosViewModel: HerosViewModelProtocol {
     private let herosUseCase: GetHerosUseCaseProtocol
     private let logoutUseCase: LogoutUseCaseProtocol
     private var heroList: [Hero]
-    var onStateChanged = Binding<HerosState>()
+    private(set) var onStateChanged = Binding<HerosState>()
     
     init(herosUseCase: GetHerosUseCaseProtocol, logoutUseCase: LogoutUseCaseProtocol) {
         self.herosUseCase = herosUseCase

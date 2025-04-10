@@ -49,6 +49,6 @@ class SplashController: UIViewController {
     
     private func renderHome() {
         activityIndicatorView.stopAnimating()
-        // TODO: Build Home
+        present(HerosBuilder().build(), animated: true)
     }
 }
