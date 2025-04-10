@@ -15,7 +15,8 @@ protocol HeroDetailViewModelProtocol {
     func loadLocations()
     func loadTransformations()
     func get() -> Hero?
-    func getMapAnnotations() -> [MKAnnotation]
+    func getMapAnnotations() -> [HeroAnnotation]
+    func getMapRegion() -> MKCoordinateRegion?
 }
 
 final class HeroDetailViewModel: HeroDetailViewModelProtocol {
@@ -59,10 +60,6 @@ final class HeroDetailViewModel: HeroDetailViewModelProtocol {
         }
     }
     
-    func get() -> Hero? {
-        hero
-    }
-    
     func loadLocations() {
         guard let heroIdentifier = hero?.identifier else { return }
         
@@ -77,17 +74,6 @@ final class HeroDetailViewModel: HeroDetailViewModelProtocol {
         })
     }
     
-    func getMapAnnotations() -> [MKAnnotation] {
-        locations.compactMap {
-            guard let coordinate = $0.coordinate else { return nil }
-            return HeroAnnotation(
-                coordinate: coordinate,
-                title: hero?.name,
-                subtitle: $0.date
-            )
-        }
-    }
-    
     func loadTransformations() {
         guard let heroIdentifier = hero?.identifier else { return }
         
@@ -100,5 +86,23 @@ final class HeroDetailViewModel: HeroDetailViewModelProtocol {
                 Logger.log(error.reason, level: .error, layer: .presentation)
             }
         })
+    }
+    
+    func get() -> Hero? {
+        hero
+    }
+    
+    func getMapAnnotations() -> [HeroAnnotation] {
+        locations.compactMap {
+            $0.annotation
+        }
+    }
+    
+    func getMapRegion() -> MKCoordinateRegion? {
+        guard let region = locations.first?.region else {
+            return nil
+        }
+        
+        return region
     }
 }

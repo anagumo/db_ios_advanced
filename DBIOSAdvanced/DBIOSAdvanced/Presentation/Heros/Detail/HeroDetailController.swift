@@ -51,11 +51,19 @@ class HeroDetailController: UIViewController {
     }
     
     private func renderLocations() {
+        // Add annotations
         let annotations = locationsMapView.annotations
         if !annotations.isEmpty {
             locationsMapView.removeAnnotations(annotations)
         }
         locationsMapView.addAnnotations(heroDetailViewModel.getMapAnnotations())
+        
+        // Center to location
+        guard let region = heroDetailViewModel.getMapRegion() else {
+            return
+        }
+        
+        locationsMapView.setRegion(region, animated: true)
     }
     
     private func renderTransformations() {
