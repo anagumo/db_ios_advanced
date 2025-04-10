@@ -10,7 +10,9 @@ final class HeroDetailBuilder {
     func build() -> UIViewController {
         let viewModel = HeroDetailViewModel(
             name: name,
-            getHeroUseCase: GetHerosUseCase()
+            getHeroUseCase: GetHerosUseCase(),
+            getLocationsUseCase: GetLocationsUseCase(),
+            getTransformationsUseCase: TransformationsUseCase()
         )
         let controller = HeroDetailController(heroDetailViewModel: viewModel)
         return controller
