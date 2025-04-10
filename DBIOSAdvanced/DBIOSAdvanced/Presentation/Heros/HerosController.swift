@@ -8,6 +8,12 @@ class HerosController: UIViewController {
     @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet private weak var collectionView: UICollectionView!
     
+    // MARK: - Data Source
+    typealias DataSource = UICollectionViewDiffableDataSource<HeroSection, Hero>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<HeroSection, Hero>
+    private var dataSource: DataSource?
+    typealias CellRegistration = UICollectionView.CellRegistration<HeroCell, Hero>
+    
     // MARK: - View Model
     private let herosViewModel: HerosViewModelProtocol
     
@@ -24,6 +30,7 @@ class HerosController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        configureCollectionView()
         bind()
         herosViewModel.load()
     }
@@ -31,6 +38,25 @@ class HerosController: UIViewController {
     // MARK: - UI Actions
     @IBAction func onTryAgainButton(_ sender: Any) {
         herosViewModel.load()
+    }
+    
+    private func configureCollectionView() {
+        // Register cell
+        let cellNib = UINib(nibName: HeroCell.identifier, bundle: Bundle(for: type(of: self)))
+        let cellRegistration = CellRegistration(cellNib: cellNib) { cell, indexPath, item in
+            cell.bind(item)
+        }
+        // Create data source
+        dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
+            collectionView.dequeueConfiguredReusableCell(
+                using: cellRegistration,
+                for: indexPath,
+                item: item
+            )
+        })
+        
+        collectionView.dataSource = dataSource
+        collectionView.delegate = self
     }
     
     // MARK: - Binding
@@ -59,6 +85,11 @@ class HerosController: UIViewController {
         activityIndicatorView.stopAnimating()
         errorStackView.isHidden = true
         collectionView.isHidden = false
+        // Update collection view data source
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(herosViewModel.getAll())
+        dataSource?.apply(snapshot)
     }
     
     private func renderLogout() {
@@ -75,6 +106,10 @@ class HerosController: UIViewController {
 
 // MARK: - UI Configuration
 extension HerosController {
+    enum HeroSection {
+        case main
+    }
+    
     private func configureUI() {
         title = "Heros"
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -83,5 +118,16 @@ extension HerosController {
                 self.herosViewModel.logout()
             }
         )
+    }
+}
+
+// MARK: - Collection View Delegates
+extension HerosController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath) -> CGSize {
+            let width = (collectionView.frame.size.width - 60) / 2
+            return CGSize(width: width, height: 200)
     }
 }

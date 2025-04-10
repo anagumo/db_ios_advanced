@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="HeroCell" customModule="DBIOSAdvanced" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="182" height="220"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="182" height="220"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="9e2-qL-qsI">
+                        <rect key="frame" x="0.0" y="0.0" width="182" height="220"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="8iP-e3-35J">
+                                <rect key="frame" x="0.0" y="0.0" width="182" height="163.66666666666666"/>
+                                <color key="backgroundColor" systemColor="systemGray5Color"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XJ8-CO-5h2">
+                                <rect key="frame" x="0.0" y="167.66666666666666" width="182" height="52.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <color key="textColor" name="PrimaryText"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="ShenronGreen"/>
+                        <constraints>
+                            <constraint firstItem="8iP-e3-35J" firstAttribute="height" secondItem="XJ8-CO-5h2" secondAttribute="width" multiplier="0.9" id="uLT-wf-KCn"/>
+                        </constraints>
+                    </stackView>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" name="AppBackground"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="9e2-qL-qsI" secondAttribute="trailing" id="90H-GG-at3"/>
+                <constraint firstItem="9e2-qL-qsI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="PHO-ua-ZDC"/>
+                <constraint firstItem="9e2-qL-qsI" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="WYQ-a8-TKZ"/>
+                <constraint firstAttribute="bottom" secondItem="9e2-qL-qsI" secondAttribute="bottom" id="h2C-zn-M0x"/>
+            </constraints>
+            <size key="customSize" width="182" height="220"/>
+            <connections>
+                <outlet property="contentStackView" destination="9e2-qL-qsI" id="aAb-gZ-hqU"/>
+                <outlet property="nameLabel" destination="XJ8-CO-5h2" id="s4W-VU-nsX"/>
+                <outlet property="photoImageView" destination="8iP-e3-35J" id="JF6-er-TBz"/>
+            </connections>
+            <point key="canvasLocation" x="239.69465648854961" y="78.873239436619727"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="AppBackground">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="PrimaryText">
+            <color red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ShenronGreen">
+            <color red="0.13333333333333333" green="0.54509803921568623" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,6 +1,6 @@
 import Foundation
 
-struct Hero: Decodable {
+struct Hero: Hashable {
     let identifier: String
     let name: String?
     let info: String?
