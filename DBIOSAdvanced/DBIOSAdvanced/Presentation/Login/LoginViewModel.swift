@@ -10,19 +10,20 @@ enum LoginState: Equatable {
 }
 
 protocol LoginViewModelProtocol {
-    func login(username: String, password: String)
+    var onStateChanged: Binding<LoginState> { get }
+    func login(username: String?, password: String?)
 }
 
 final class LoginViewModel: LoginViewModelProtocol {
     private let loginUseCase: LoginUseCaseProtocol
-    var onStateChanged: Binding<LoginState>
+    private(set) var onStateChanged: Binding<LoginState>
     
     init(loginUseCase: LoginUseCaseProtocol) {
         self.loginUseCase = loginUseCase
         self.onStateChanged = Binding<LoginState>()
     }
     
-    func login(username: String, password: String) {
+    func login(username: String?, password: String?) {
         onStateChanged.update(.loading)
         
         loginUseCase.run(username: username, password: password) { [weak self] result in

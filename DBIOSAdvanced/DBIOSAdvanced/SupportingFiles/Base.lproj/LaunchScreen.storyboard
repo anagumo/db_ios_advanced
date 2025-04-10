@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dragon_ball" translatesAutoresizingMaskIntoConstraints="NO" id="MoI-Hx-SWm">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DragonBall" translatesAutoresizingMaskIntoConstraints="NO" id="MoI-Hx-SWm">
                                 <rect key="frame" x="11.666666666666657" y="362" width="370" height="128"/>
                             </imageView>
                         </subviews>
@@ -35,7 +35,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="dragon_ball" width="370" height="370"/>
+        <image name="DragonBall" width="370" height="370"/>
         <namedColor name="KameBlue">
             <color red="0.11764705882352941" green="0.56470588235294117" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -44,7 +44,7 @@ class SplashController: UIViewController {
     
     private func renderLogin() {
         activityIndicatorView.stopAnimating()
-        // TODO: Build Login
+        present(LoginBuilder().build(), animated: true)
     }
     
     private func renderHome() {

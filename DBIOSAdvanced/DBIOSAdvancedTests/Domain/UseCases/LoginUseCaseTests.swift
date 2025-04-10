@@ -4,6 +4,7 @@ import XCTest
 
 final class LoginUseCaseTests: XCTestCase {
     var sut: LoginUseCaseProtocol!
+    var mockSessionLocalDataSource: MockSessionLocalDataSource!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -11,7 +12,7 @@ final class LoginUseCaseTests: XCTestCase {
         urlSessionConfiguration.protocolClasses = [MockURLProtocol.self]
         let mockURLSession = URLSession(configuration: urlSessionConfiguration)
         let mockAPISession = APISession(urlSession: mockURLSession)
-        let mockSessionLocalDataSource = MockSessionLocalDataSource()
+        mockSessionLocalDataSource = MockSessionLocalDataSource()
         sut = LoginUseCase(
             apiSession: mockAPISession,
             sessionLocalDataSource: mockSessionLocalDataSource
@@ -21,6 +22,8 @@ final class LoginUseCaseTests: XCTestCase {
     override func tearDownWithError() throws {
         MockURLProtocol.error = nil
         MockURLProtocol.requestHandler = nil
+        mockSessionLocalDataSource.clear()
+        mockSessionLocalDataSource = nil
         sut = nil
         try super.tearDownWithError()
     }
