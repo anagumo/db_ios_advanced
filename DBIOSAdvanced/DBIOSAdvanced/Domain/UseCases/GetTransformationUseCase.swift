@@ -8,7 +8,7 @@ protocol GetTransformationUseCaseProtocol {
 final class GetTransformationUseCase: GetTransformationUseCaseProtocol {
     private let storeDataProvider: StoreDataProvider
     
-    init(storeDataProvider: StoreDataProvider) {
+    init(storeDataProvider: StoreDataProvider = .shared) {
         self.storeDataProvider = storeDataProvider
     }
     

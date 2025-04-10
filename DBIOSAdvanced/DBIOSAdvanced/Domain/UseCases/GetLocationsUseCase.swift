@@ -9,7 +9,10 @@ final class GetLocationsUseCase: GetLocationsUseCaseProtocol {
     private let storeDataProvider: StoreDataProvider
     private let apiSession: APISessionProtocol
     
-    init(storeDataProvider: StoreDataProvider, apiSession: APISessionProtocol) {
+    init(
+        storeDataProvider: StoreDataProvider = .shared,
+        apiSession: APISessionProtocol = APISession.shared
+    ) {
         self.storeDataProvider = storeDataProvider
         self.apiSession = apiSession
     }

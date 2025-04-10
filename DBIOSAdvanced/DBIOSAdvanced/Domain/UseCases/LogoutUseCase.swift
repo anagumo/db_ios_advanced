@@ -8,7 +8,7 @@ protocol LogoutUseCaseProtocol {
 final class LogoutUseCase: LogoutUseCaseProtocol {
     private let sessionLocalDataSource: SessionLocalDataSourceProtocol
     
-    init(sessionLocalDataSource: SessionLocalDataSourceProtocol) {
+    init(sessionLocalDataSource: SessionLocalDataSourceProtocol = SessionLocalDataSource.shared) {
         self.sessionLocalDataSource = sessionLocalDataSource
     }
     

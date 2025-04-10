@@ -9,7 +9,10 @@ final class LoginUseCase: LoginUseCaseProtocol {
     private let apiSession: APISessionProtocol
     private let sessionLocalDataSource: SessionLocalDataSourceProtocol
     
-    init(apiSession: APISessionProtocol, sessionLocalDataSource: SessionLocalDataSourceProtocol) {
+    init(
+        apiSession: APISessionProtocol = APISession.shared,
+        sessionLocalDataSource: SessionLocalDataSourceProtocol = SessionLocalDataSource.shared
+    ) {
         self.apiSession = apiSession
         self.sessionLocalDataSource = sessionLocalDataSource
     }
