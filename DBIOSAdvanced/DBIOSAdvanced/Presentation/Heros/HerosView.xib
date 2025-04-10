@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HerosController" customModule="DBIOSAdvanced" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicatorView" destination="h5f-lJ-h9z" id="4Tw-hO-rp4"/>
+                <outlet property="collectionView" destination="Y0r-gc-xYi" id="7ft-Mr-wTi"/>
+                <outlet property="errorLabel" destination="AwZ-Qf-Es2" id="fBx-fy-fkM"/>
+                <outlet property="errorStackView" destination="Xwx-vQ-XbH" id="y5g-Y7-whg"/>
+                <outlet property="tryAgainButton" destination="nFF-4T-tBo" id="2aM-XC-Uq4"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -17,8 +23,71 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Y0r-gc-xYi">
+                    <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="o8d-6d-319">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Xwx-vQ-XbH" userLabel="Error Stack View">
+                    <rect key="frame" x="63.333333333333343" y="368" width="266.33333333333326" height="116.33333333333331"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Dqu-Rm-Pyc" userLabel="Title Stack View">
+                            <rect key="frame" x="0.0" y="0.0" width="266.33333333333331" height="52.333333333333336"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops! Something went wrong" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Xl-9b-st0" userLabel="Title Label">
+                                    <rect key="frame" x="0.0" y="0.0" width="266.33333333333331" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                    <color key="textColor" name="SaiyanGold"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Description" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AwZ-Qf-Es2" userLabel="Subtitle Label">
+                                    <rect key="frame" x="0.0" y="32" width="266.33333333333331" height="20.333333333333329"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" name="PrimaryText"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nFF-4T-tBo" userLabel="Try Again Button">
+                            <rect key="frame" x="84.666666666666657" y="72.333333333333314" width="97.333333333333343" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="JFL-td-e3X"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="filled" title="Try Again">
+                                <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="17"/>
+                                <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="baseBackgroundColor" name="PrimaryOrange"/>
+                            </buttonConfiguration>
+                            <connections>
+                                <action selector="onTryAgainButton:" destination="-1" eventType="touchUpInside" id="dav-hL-hnO"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="h5f-lJ-h9z">
+                    <rect key="frame" x="178" y="407.66666666666669" width="37" height="37"/>
+                    <color key="color" name="KameBlue"/>
+                </activityIndicatorView>
+            </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="AppBackground"/>
+            <constraints>
+                <constraint firstItem="h5f-lJ-h9z" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="0W9-PR-2Tv"/>
+                <constraint firstItem="Y0r-gc-xYi" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="2oz-e4-yAk"/>
+                <constraint firstItem="h5f-lJ-h9z" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="E1q-1I-vw4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Y0r-gc-xYi" secondAttribute="trailing" id="GiY-PW-MQl"/>
+                <constraint firstItem="Xwx-vQ-XbH" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Qg3-YC-iaF"/>
+                <constraint firstItem="Y0r-gc-xYi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="lnA-eC-GOM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Y0r-gc-xYi" secondAttribute="bottom" id="neq-x9-9JF"/>
+                <constraint firstItem="Xwx-vQ-XbH" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="yAe-IR-5kf"/>
+            </constraints>
             <point key="canvasLocation" x="89" y="20"/>
         </view>
     </objects>
@@ -26,5 +95,20 @@
         <namedColor name="AppBackground">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="KameBlue">
+            <color red="0.11764705882352941" green="0.56470588235294117" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="PrimaryOrange">
+            <color red="1" green="0.59999999999999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="PrimaryText">
+            <color red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="SaiyanGold">
+            <color red="1" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

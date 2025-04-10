@@ -1,6 +1,13 @@
 import UIKit
 
 class HerosController: UIViewController {
+    // MARK: - UI Components
+    @IBOutlet private weak var errorStackView: UIStackView!
+    @IBOutlet private weak var errorLabel: UILabel!
+    @IBOutlet private weak var tryAgainButton: UIButton!
+    @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet private weak var collectionView: UICollectionView!
+    
     // MARK: - View Model
     private let herosViewModel: HerosViewModelProtocol
     
@@ -16,8 +23,14 @@ class HerosController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUIComponents()
+        configureUI()
         bind()
+        herosViewModel.load()
+    }
+    
+    // MARK: - UI Actions
+    @IBAction func onTryAgainButton(_ sender: Any) {
+        herosViewModel.load()
     }
     
     // MARK: - Binding
@@ -25,29 +38,44 @@ class HerosController: UIViewController {
         herosViewModel.onStateChanged.bind { [weak self] state in
             switch state {
             case .loading:
-                // TODO: Render loading
-                break
+                self?.renderLoading()
             case .ready:
-                // TODO: Render ready
-                break
+                self?.renderReady()
             case .logout:
                 self?.renderLogout()
-            case .error:
-                // TODO: Render error
-                break
+            case let .error(message):
+                self?.renderError(message)
             }
         }
     }
     
     // MARK: - Rendering State
+    private func renderLoading() {
+        activityIndicatorView.isHidden = false
+        activityIndicatorView.startAnimating()
+    }
+    
+    private func renderReady() {
+        activityIndicatorView.stopAnimating()
+        errorStackView.isHidden = true
+        collectionView.isHidden = false
+    }
+    
     private func renderLogout() {
         dismiss(animated: true)
     }
+    
+    private func renderError(_ message: String) {
+        activityIndicatorView.stopAnimating()
+        collectionView.isHidden = true
+        errorStackView.isHidden = false
+        errorLabel.text = message
+    }
 }
 
-// MARK: - UI Components Configuration
+// MARK: - UI Configuration
 extension HerosController {
-    private func configureUIComponents() {
+    private func configureUI() {
         title = "Heros"
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "power.circle.fill"),
