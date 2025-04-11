@@ -93,7 +93,10 @@ final class HerosController: UIViewController {
     }
     
     private func renderLogout() {
-        dismiss(animated: true)
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+            return
+        }
+        sceneDelegate.window?.rootViewController = LoginBuilder().build()
     }
     
     private func renderError(_ message: String) {

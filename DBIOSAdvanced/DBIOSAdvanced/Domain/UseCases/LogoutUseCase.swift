@@ -7,9 +7,14 @@ protocol LogoutUseCaseProtocol {
 
 final class LogoutUseCase: LogoutUseCaseProtocol {
     private let sessionLocalDataSource: SessionLocalDataSourceProtocol
+    private let storeDataProvider: StoreDataProvider
     
-    init(sessionLocalDataSource: SessionLocalDataSourceProtocol = SessionLocalDataSource.shared) {
+    init(
+        sessionLocalDataSource: SessionLocalDataSourceProtocol = SessionLocalDataSource.shared,
+        storeDataProvider: StoreDataProvider = .shared
+    ) {
         self.sessionLocalDataSource = sessionLocalDataSource
+        self.storeDataProvider = storeDataProvider
     }
     
     func run(completion: @escaping (Result<Void, PresentationError>) -> Void) {
@@ -20,6 +25,7 @@ final class LogoutUseCase: LogoutUseCaseProtocol {
         }
         
         sessionLocalDataSource.clear()
+        storeDataProvider.clearBBDD()
         Logger.log("User session cleaned", level: .trace, layer: .domain)
         completion(.success(()))
     }
