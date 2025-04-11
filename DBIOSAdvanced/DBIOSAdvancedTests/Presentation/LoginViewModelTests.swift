@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 @testable import DBIOSAdvanced
 
-final class LoginModelViewTests: XCTestCase {
+final class LoginViewModelTests: XCTestCase {
     var sut: LoginViewModel!
     var mockLoginUseCase: MockLoginUseCase!
     

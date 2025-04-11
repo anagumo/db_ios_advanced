@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 @testable import DBIOSAdvanced
 
-final class HerosModelViewTests: XCTestCase {
+final class HerosViewModelTests: XCTestCase {
     var sut: HerosViewModel!
     var mockHerosUseCase: MockHerosUseCase!
     var mockLogoutUseCase: MockLogoutUseCase!
@@ -118,7 +118,7 @@ final class HerosModelViewTests: XCTestCase {
         // Given
         let loadingExpectation = expectation(description: "Loading state succeed")
         let logoutExpectation = expectation(description: "Logout state succeed")
-        let urlFile = try XCTUnwrap(Bundle(for: LogoutUseCaseTests.self).url(forResource: "jwt", withExtension: "txt"))
+        let urlFile = try XCTUnwrap(Bundle(for: type(of: self)).url(forResource: "jwt", withExtension: "txt"))
         let jwtData = try XCTUnwrap(Data(contentsOf: urlFile))
         mockLogoutUseCase.receivedData = jwtData
         

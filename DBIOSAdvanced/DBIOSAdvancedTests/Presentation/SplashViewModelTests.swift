@@ -44,7 +44,7 @@ final class SplashViewModelTests: XCTestCase {
         // Given
         let loadingExpectation = expectation(description: "Loading state succeed")
         let homeExpectation = expectation(description: "Home state succeed")
-        let fileURL = try XCTUnwrap(Bundle(for: SplashViewModelTests.self).url(forResource: "jwt", withExtension: "txt"))
+        let fileURL = try XCTUnwrap(Bundle(for: type(of: self)).url(forResource: "jwt", withExtension: "txt"))
         let data = try XCTUnwrap(Data(contentsOf: fileURL))
         mockSessionLocalDataSource.set(data)
         
