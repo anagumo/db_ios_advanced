@@ -17,6 +17,7 @@ protocol HeroDetailViewModelProtocol {
     func get() -> Hero?
     func getMapAnnotations() -> [HeroAnnotation]
     func getMapRegion() -> MKCoordinateRegion?
+    func getTransformations() -> [Transformation]
 }
 
 final class HeroDetailViewModel: HeroDetailViewModelProtocol {
@@ -104,5 +105,9 @@ final class HeroDetailViewModel: HeroDetailViewModelProtocol {
         }
         
         return region
+    }
+    
+    func getTransformations() -> [Transformation] {
+        transformations
     }
 }

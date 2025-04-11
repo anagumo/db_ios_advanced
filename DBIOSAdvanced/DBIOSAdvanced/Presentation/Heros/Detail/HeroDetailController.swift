@@ -1,12 +1,22 @@
 import UIKit
 import MapKit
 
+enum TransformationSection {
+    case main
+}
+
 class HeroDetailController: UIViewController {
-    // MARK: - View Model
+    // MARK: - UI Components
     @IBOutlet weak var locationsMapView: MKMapView!
     @IBOutlet weak var infoLabel: UITextView!
     @IBOutlet weak var transformationsCollectionView: UICollectionView!
+    // MARK: - View Model
     private let heroDetailViewModel: HeroDetailViewModelProtocol
+    // MARK: - Data Source
+    typealias DataSource = UICollectionViewDiffableDataSource<TransformationSection, Transformation>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<TransformationSection, Transformation>
+    typealias CellRegistration = UICollectionView.CellRegistration<TransformationCell, Transformation>
+    private var dataSource: DataSource?
     
     // MARK: - Lifecycle
     init(heroDetailViewModel: HeroDetailViewModel) {
@@ -20,9 +30,28 @@ class HeroDetailController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureCollectionView()
         locationsMapView.delegate = self
         bind()
         heroDetailViewModel.load()
+    }
+    
+    private func configureCollectionView() {
+        let cellNib = UINib(nibName: TransformationCell.identifier, bundle: Bundle(for: type(of: self)))
+        let cellRegistration = CellRegistration(cellNib: cellNib) { cell, indexPath, item in
+            cell.bind(item)
+        }
+        
+        dataSource = DataSource(collectionView: transformationsCollectionView, cellProvider: { collectionView, indexPath, item in
+            collectionView.dequeueConfiguredReusableCell(
+                using: cellRegistration,
+                for: indexPath,
+                item: item
+            )
+        })
+        
+        transformationsCollectionView.dataSource = dataSource
+        transformationsCollectionView.delegate = self
     }
     
     // MARK: - Binding
@@ -67,7 +96,11 @@ class HeroDetailController: UIViewController {
     }
     
     private func renderTransformations() {
-        // TODO: Render transformations
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(heroDetailViewModel.getTransformations())
+        dataSource?.apply(snapshot)
+        transformationsCollectionView.isHidden = false
     }
     
     private func renderError(_ message: String) {
@@ -91,4 +124,14 @@ extension HeroDetailController: MKMapViewDelegate {
         
         return view
     }
+}
+
+// MARK: - Collection View Delegates
+extension HeroDetailController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath) -> CGSize {
+            return CGSize(width: 150, height: 150)
+        }
 }

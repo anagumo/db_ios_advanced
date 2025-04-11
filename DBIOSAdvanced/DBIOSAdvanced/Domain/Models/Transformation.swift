@@ -1,6 +1,6 @@
 import Foundation
 
-struct Transformation {
+struct Transformation: Hashable {
     let identifier: String
     let name: String?
     let info: String?
