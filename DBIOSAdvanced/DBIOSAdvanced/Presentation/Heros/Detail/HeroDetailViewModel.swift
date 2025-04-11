@@ -22,7 +22,7 @@ protocol HeroDetailViewModelProtocol {
 }
 
 final class HeroDetailViewModel: HeroDetailViewModelProtocol {
-    private let getHeroUseCase: GetHerosUseCaseProtocol
+    private let getHerosUseCase: GetHerosUseCaseProtocol
     private let getLocationsUseCase: GetLocationsUseCaseProtocol
     private let getTransformationsUseCase: GetTransformationsUseCaseProtocol
     private let name: String
@@ -33,12 +33,12 @@ final class HeroDetailViewModel: HeroDetailViewModelProtocol {
     
     init(
         name: String,
-        getHeroUseCase: GetHerosUseCaseProtocol,
+        getHerosUseCase: GetHerosUseCaseProtocol,
         getLocationsUseCase: GetLocationsUseCaseProtocol,
         getTransformationsUseCase: GetTransformationsUseCaseProtocol
     ) {
         self.name = name
-        self.getHeroUseCase = getHeroUseCase
+        self.getHerosUseCase = getHerosUseCase
         self.getLocationsUseCase = getLocationsUseCase
         self.getTransformationsUseCase = getTransformationsUseCase
         self.onStateChanged = Binding<HeroState>()
@@ -47,7 +47,7 @@ final class HeroDetailViewModel: HeroDetailViewModelProtocol {
     }
     
     func load() {
-        getHeroUseCase.run(name: name) { [weak self] result in
+        getHerosUseCase.run(name: name) { [weak self] result in
             switch result {
             case let .success(heros):
                 guard let hero = heros.first else {

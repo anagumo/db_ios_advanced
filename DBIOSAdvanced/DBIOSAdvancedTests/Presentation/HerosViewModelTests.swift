@@ -3,12 +3,12 @@ import XCTest
 
 final class HerosViewModelTests: XCTestCase {
     var sut: HerosViewModel!
-    var mockHerosUseCase: MockHerosUseCase!
+    var mockHerosUseCase: MockGetHerosUseCase!
     var mockLogoutUseCase: MockLogoutUseCase!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
-        mockHerosUseCase = MockHerosUseCase()
+        mockHerosUseCase = MockGetHerosUseCase()
         mockLogoutUseCase = MockLogoutUseCase()
         sut = HerosViewModel(
             herosUseCase: mockHerosUseCase,

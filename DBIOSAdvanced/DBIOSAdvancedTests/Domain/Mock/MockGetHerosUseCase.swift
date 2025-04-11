@@ -1,10 +1,10 @@
 import XCTest
 @testable import DBIOSAdvanced
 
-final class MockHerosUseCase: GetHerosUseCaseProtocol {
+final class MockGetHerosUseCase: GetHerosUseCaseProtocol {
     var receivedResponse: [Hero]? = nil
     
-    func run(name: String, completion: @escaping (Result<[DBIOSAdvanced.Hero], DBIOSAdvanced.PresentationError>) -> Void) {
+    func run(name: String, completion: @escaping (Result<[DBIOSAdvanced.Hero], PresentationError>) -> Void) {
         guard let heroList = receivedResponse else {
             completion(.failure(.network("No data received")))
             return
