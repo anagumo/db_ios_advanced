@@ -1,4 +1,3 @@
-import Foundation
 @testable import DBIOSAdvanced
 
 enum LocationDTOData {
