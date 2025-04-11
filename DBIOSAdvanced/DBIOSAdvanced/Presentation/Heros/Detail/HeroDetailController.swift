@@ -131,7 +131,17 @@ extension HeroDetailController: UICollectionViewDelegateFlowLayout, UICollection
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return CGSize(width: 150, height: 150)
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(width: 150, height: 150)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard
+            let transformation = heroDetailViewModel.getTransformation(indexPath.row) else {
+            return
         }
+        
+        present(TransformationBuilder(identifier: transformation.identifier).build(), animated: true)
+    }
 }

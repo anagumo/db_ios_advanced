@@ -1,6 +1,6 @@
 import UIKit
 
-class HerosController: UIViewController {
+final class HerosController: UIViewController {
     // MARK: - UI Components
     @IBOutlet private weak var errorStackView: UIStackView!
     @IBOutlet private weak var errorLabel: UILabel!

@@ -1,8 +1,8 @@
 import UIKit
 
-class SplashController: UIViewController {
+final class SplashController: UIViewController {
     // MARK: - UI Components
-    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
     // MARK: - ViewModel
     private let splashViewModel: SplashViewModelProtocol
     

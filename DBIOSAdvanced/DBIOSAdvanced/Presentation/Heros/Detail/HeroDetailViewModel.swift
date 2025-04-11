@@ -18,6 +18,7 @@ protocol HeroDetailViewModelProtocol {
     func getMapAnnotations() -> [HeroAnnotation]
     func getMapRegion() -> MKCoordinateRegion?
     func getTransformations() -> [Transformation]
+    func getTransformation(_ position: Int) -> Transformation?
 }
 
 final class HeroDetailViewModel: HeroDetailViewModelProtocol {
@@ -109,5 +110,13 @@ final class HeroDetailViewModel: HeroDetailViewModelProtocol {
     
     func getTransformations() -> [Transformation] {
         transformations
+    }
+    
+    func getTransformation(_ position: Int) -> Transformation? {
+        guard position < transformations.count else {
+            Logger.log("Transformation not found in the list", level: .error, layer: .presentation)
+            return nil
+        }
+        return transformations[position]
     }
 }

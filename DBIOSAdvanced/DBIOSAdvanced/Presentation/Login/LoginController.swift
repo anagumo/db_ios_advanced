@@ -1,6 +1,6 @@
 import UIKit
 
-class LoginController: UIViewController {
+final class LoginController: UIViewController {
     // MARK: - UIComponents
     @IBOutlet private weak var usernameTextField: UITextField!
     @IBOutlet private weak var usernameErrorLabel: UILabel!
