@@ -23,8 +23,8 @@ final class GetTransformationUseCaseTests: XCTestCase {
     func testGetTransformation_WhenLocalIsNotEmpty_ShouldSucceed() throws {
         // Given
         let successExpectation = expectation(description: "Get transformations from local succeed")
-        let heroDTO = try XCTUnwrap(HeroDTOData.givenList.filter { $0.name == "Goku" }.first)
-        let transformationDTOList = TransformationDTOData.givenList
+        let heroDTO = try XCTUnwrap(HeroData.givenDTOList.filter { $0.name == "Goku" }.first)
+        let transformationDTOList = TransformationData.givenDTOList
         let transformationDTO = try XCTUnwrap(transformationDTOList.first)
         mockStoreDataProvider.insertHeros([heroDTO])
         mockStoreDataProvider.insertTransformations(transformationDTOList)

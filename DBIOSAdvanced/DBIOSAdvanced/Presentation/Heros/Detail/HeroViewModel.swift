@@ -9,7 +9,7 @@ enum HeroState: Equatable {
     case error(String)
 }
 
-protocol HeroDetailViewModelProtocol {
+protocol HeroViewModelProtocol {
     var onStateChanged: Binding<HeroState> { get }
     func load()
     func loadLocations()
@@ -21,7 +21,7 @@ protocol HeroDetailViewModelProtocol {
     func getTransformation(_ position: Int) -> Transformation?
 }
 
-final class HeroDetailViewModel: HeroDetailViewModelProtocol {
+final class HeroViewModel: HeroViewModelProtocol {
     private let getHerosUseCase: GetHerosUseCaseProtocol
     private let getLocationsUseCase: GetLocationsUseCaseProtocol
     private let getTransformationsUseCase: GetTransformationsUseCaseProtocol

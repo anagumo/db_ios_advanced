@@ -30,7 +30,7 @@ final class GetLocationsUseCaseTests: XCTestCase {
     func testGetLocations_WhenLocalIsEmpty_ShouldSucceed() throws {
         // Given
         let successExpectation = expectation(description: "Get locations from remote suceed")
-        let heroDTO = try XCTUnwrap(HeroDTOData.givenList.filter { $0.name == "Piccolo" }.first)
+        let heroDTO = try XCTUnwrap(HeroData.givenDTOList.filter { $0.name == "Piccolo" }.first)
         mockStoreDataProvider.insertHeros([heroDTO])
         
         var receivedRequest: URLRequest?
@@ -78,8 +78,8 @@ final class GetLocationsUseCaseTests: XCTestCase {
     func testGetLocations_WhenLocalIsNotEmpty_ShouldSucceed() throws {
         // Given
         let successExpectation = expectation(description: "Get locations from local succeed")
-        let heroDTO = try XCTUnwrap(HeroDTOData.givenList.filter { $0.name == "Piccolo" }.first)
-        let locationDTOList = LocationDTOData.givenList
+        let heroDTO = try XCTUnwrap(HeroData.givenDTOList.filter { $0.name == "Piccolo" }.first)
+        let locationDTOList = LocationData.givenDTOList
         mockStoreDataProvider.insertHeros([heroDTO])
         mockStoreDataProvider.insertLocations(locationDTOList)
         

@@ -27,7 +27,7 @@ final class HerosViewModelTests: XCTestCase {
         // Given
         let loadingExpectation = expectation(description: "Loading state succeed")
         let readyExpectation = expectation(description: "Ready state succeed")
-        let heroDTOList = HeroDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
         let heroList = heroDTOList.compactMap { HeroDTOtoDomainMapper().map($0) }
         mockHerosUseCase.receivedResponse = heroList
         

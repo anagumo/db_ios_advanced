@@ -1,6 +1,6 @@
 import UIKit
 
-final class HeroDetailBuilder {
+final class HeroBuilder {
     private let name: String
     
     init(name: String) {
@@ -8,13 +8,13 @@ final class HeroDetailBuilder {
     }
     
     func build() -> UIViewController {
-        let viewModel = HeroDetailViewModel(
+        let viewModel = HeroViewModel(
             name: name,
             getHerosUseCase: GetHerosUseCase(),
             getLocationsUseCase: GetLocationsUseCase(),
             getTransformationsUseCase: TransformationsUseCase()
         )
-        let controller = HeroDetailController(heroDetailViewModel: viewModel)
+        let controller = HeroController(heroViewModel: viewModel)
         return controller
     }
 }

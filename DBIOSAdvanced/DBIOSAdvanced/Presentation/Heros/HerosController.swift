@@ -140,6 +140,6 @@ extension HerosController: UICollectionViewDelegateFlowLayout, UICollectionViewD
             let heroName = hero.name else {
             return
         }
-        show(HeroDetailBuilder(name: heroName).build(), sender: self)
+        show(HeroBuilder(name: heroName).build(), sender: self)
     }
 }

@@ -1,7 +1,7 @@
 @testable import DBIOSAdvanced
 
-enum LocationDTOData {
-    static let givenList = [
+enum LocationData {
+    static let givenDTOList = [
         LocationDTO(
             identifier: "ACB5ABB7-8C85-4A0F-872C-5467EDD23D7F",
             longitude: "-115.3154276",

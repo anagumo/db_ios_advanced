@@ -5,13 +5,13 @@ enum TransformationSection {
     case main
 }
 
-class HeroDetailController: UIViewController {
+class HeroController: UIViewController {
     // MARK: - UI Components
     @IBOutlet weak var locationsMapView: MKMapView!
     @IBOutlet weak var infoLabel: UITextView!
     @IBOutlet weak var transformationsCollectionView: UICollectionView!
     // MARK: - View Model
-    private let heroDetailViewModel: HeroDetailViewModelProtocol
+    private let heroViewModel: HeroViewModelProtocol
     // MARK: - Data Source
     typealias DataSource = UICollectionViewDiffableDataSource<TransformationSection, Transformation>
     typealias Snapshot = NSDiffableDataSourceSnapshot<TransformationSection, Transformation>
@@ -19,9 +19,9 @@ class HeroDetailController: UIViewController {
     private var dataSource: DataSource?
     
     // MARK: - Lifecycle
-    init(heroDetailViewModel: HeroDetailViewModel) {
-        self.heroDetailViewModel = heroDetailViewModel
-        super.init(nibName: "HeroDetailView", bundle: Bundle(for: type(of: self)))
+    init(heroViewModel: HeroViewModel) {
+        self.heroViewModel = heroViewModel
+        super.init(nibName: "HeroView", bundle: Bundle(for: type(of: self)))
     }
     
     required init?(coder: NSCoder) {
@@ -33,7 +33,7 @@ class HeroDetailController: UIViewController {
         configureCollectionView()
         locationsMapView.delegate = self
         bind()
-        heroDetailViewModel.load()
+        heroViewModel.load()
     }
     
     private func configureCollectionView() {
@@ -56,7 +56,7 @@ class HeroDetailController: UIViewController {
     
     // MARK: - Binding
     private func bind() {
-        heroDetailViewModel.onStateChanged.bind { [weak self] state in
+        heroViewModel.onStateChanged.bind { [weak self] state in
             switch state {
             case .ready:
                 self?.renderReady()
@@ -72,11 +72,11 @@ class HeroDetailController: UIViewController {
     
     // MARK: - Rendering State
     private func renderReady() {
-        let hero = heroDetailViewModel.get()
+        let hero = heroViewModel.get()
         title = hero?.name
         infoLabel.text = hero?.info
-        heroDetailViewModel.loadLocations()
-        heroDetailViewModel.loadTransformations()
+        heroViewModel.loadLocations()
+        heroViewModel.loadTransformations()
     }
     
     private func renderLocations() {
@@ -85,10 +85,10 @@ class HeroDetailController: UIViewController {
         if !annotations.isEmpty {
             locationsMapView.removeAnnotations(annotations)
         }
-        locationsMapView.addAnnotations(heroDetailViewModel.getMapAnnotations())
+        locationsMapView.addAnnotations(heroViewModel.getMapAnnotations())
         
         // Center to location
-        guard let region = heroDetailViewModel.getMapRegion() else {
+        guard let region = heroViewModel.getMapRegion() else {
             return
         }
         
@@ -98,7 +98,7 @@ class HeroDetailController: UIViewController {
     private func renderTransformations() {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(heroDetailViewModel.getTransformations())
+        snapshot.appendItems(heroViewModel.getTransformations())
         dataSource?.apply(snapshot)
         transformationsCollectionView.isHidden = false
     }
@@ -112,7 +112,7 @@ class HeroDetailController: UIViewController {
 }
 
 // MARK: - MKMapView Delegate
-extension HeroDetailController: MKMapViewDelegate {
+extension HeroController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
         guard annotation is HeroAnnotation else {
             return nil
@@ -127,7 +127,7 @@ extension HeroDetailController: MKMapViewDelegate {
 }
 
 // MARK: - Collection View Delegates
-extension HeroDetailController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+extension HeroController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -138,7 +138,7 @@ extension HeroDetailController: UICollectionViewDelegateFlowLayout, UICollection
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
-            let transformation = heroDetailViewModel.getTransformation(indexPath.row) else {
+            let transformation = heroViewModel.getTransformation(indexPath.row) else {
             return
         }
         

@@ -19,7 +19,7 @@ final class StoreDataProviderTests: XCTestCase {
     // MARK: - Hero Cases
     func testInsertHeros() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
         let initialHeroEntityListCount = try XCTUnwrap(sut?.fetchHeros().count)
         
         // When
@@ -38,7 +38,7 @@ final class StoreDataProviderTests: XCTestCase {
     
     func testFetchHeros() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
         
         // When
         sut?.insertHeros(heroDTOList)
@@ -69,7 +69,7 @@ final class StoreDataProviderTests: XCTestCase {
     
     func testFetchHero() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
         
         // When
         sut?.insertHeros(heroDTOList)
@@ -83,7 +83,7 @@ final class StoreDataProviderTests: XCTestCase {
     
     func testFetchHero_ShouldReturnError() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
         
         // When
         sut?.insertHeros(heroDTOList)
@@ -96,8 +96,8 @@ final class StoreDataProviderTests: XCTestCase {
     // MARK: - Transformation Cases
     func testInsertTransformations() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
-        let transformationDTOList = TransformationDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
+        let transformationDTOList = TransformationData.givenDTOList
         
         // When
         sut?.insertHeros(heroDTOList)
@@ -115,8 +115,8 @@ final class StoreDataProviderTests: XCTestCase {
     
     func testFetchTransformations() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
-        let transformationDTOList = TransformationDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
+        let transformationDTOList = TransformationData.givenDTOList
         let heroDTO = try XCTUnwrap(heroDTOList.filter { $0.name == "Goku" }.first)
         
         // When
@@ -135,7 +135,7 @@ final class StoreDataProviderTests: XCTestCase {
     
     func testFetchTransformations_ShouldReturnError() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
         let heroDTO = try XCTUnwrap(heroDTOList.filter { $0.name == "Piccolo" }.first)
         
         // When
@@ -149,8 +149,8 @@ final class StoreDataProviderTests: XCTestCase {
     
     func testFetchTransformation() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
-        let transformationDTOList = TransformationDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
+        let transformationDTOList = TransformationData.givenDTOList
         let transformationDTO = try XCTUnwrap(transformationDTOList.filter { $0.identifier == "EE4DEC64-1B2D-47C1-A8EA-3208894A57A6" }.first)
         
         // When
@@ -168,7 +168,7 @@ final class StoreDataProviderTests: XCTestCase {
     
     func testFetchTransformation_ShouldReturnError() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
         let heroDTO = try XCTUnwrap(heroDTOList.filter { $0.name == "Piccolo" }.first)
         
         // When
@@ -182,8 +182,8 @@ final class StoreDataProviderTests: XCTestCase {
     // MARK: - Location Cases
     func testInsertLocations() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
-        let locationDTOList = LocationDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
+        let locationDTOList = LocationData.givenDTOList
         
         // When
         sut?.insertHeros(heroDTOList)
@@ -203,8 +203,8 @@ final class StoreDataProviderTests: XCTestCase {
     
     func testFetchLocations() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
-        let locationDTOList = LocationDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
+        let locationDTOList = LocationData.givenDTOList
         let heroDTO = try XCTUnwrap(heroDTOList.filter { $0.name == "Piccolo" }.first)
         
         // When
@@ -222,7 +222,7 @@ final class StoreDataProviderTests: XCTestCase {
     
     func testFetchLocations_ShouldReturnError() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
         let heroDTO = try XCTUnwrap(heroDTOList.filter { $0.name == "Piccolo" }.first)
         
         // When
@@ -236,8 +236,8 @@ final class StoreDataProviderTests: XCTestCase {
     
     func testClearBBDD() throws {
         // Given
-        let heroDTOList = HeroDTOData.givenList
-        let locationDTOList = LocationDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
+        let locationDTOList = LocationData.givenDTOList
         
         // When
         sut?.insertHeros(heroDTOList)

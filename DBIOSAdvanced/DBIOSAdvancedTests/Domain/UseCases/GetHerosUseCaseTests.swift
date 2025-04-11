@@ -73,7 +73,7 @@ final class GetHerosUseCaseTests: XCTestCase {
     func testGetHeros_WhenLocalIsNotEmpty_ShouldSucceed() throws {
         // Given
         let successExpectation = expectation(description: "Get heros from local succeed")
-        let heroDTOList = HeroDTOData.givenList
+        let heroDTOList = HeroData.givenDTOList
         mockStoreDataProvider.insertHeros(heroDTOList)
         
         // When

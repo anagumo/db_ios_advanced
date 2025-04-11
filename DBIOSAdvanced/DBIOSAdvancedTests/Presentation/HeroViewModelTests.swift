@@ -2,7 +2,7 @@ import XCTest
 @testable import DBIOSAdvanced
 
 final class HeroViewModelTests: XCTestCase {
-    var sut: HeroDetailViewModel!
+    var sut: HeroViewModel!
     var mockGetHerosUseCase: MockGetHerosUseCase!
     var mockGetLocationsUseCase: MockGetLocationsUseCase!
     var mockGetTransformationsUseCase: MockGetTransformationsUseCase!
@@ -12,16 +12,16 @@ final class HeroViewModelTests: XCTestCase {
         mockGetHerosUseCase = MockGetHerosUseCase()
         mockGetLocationsUseCase = MockGetLocationsUseCase()
         mockGetTransformationsUseCase = MockGetTransformationsUseCase()
-        sut = HeroDetailViewModel(
+        sut = HeroViewModel(
             name: "Piccolo",
             getHerosUseCase: mockGetHerosUseCase,
             getLocationsUseCase: mockGetLocationsUseCase,
             getTransformationsUseCase: mockGetTransformationsUseCase
         )
         
-        let hero = HeroDTOData.givenDomainList.filter { $0.name == "Piccolo" }
+        let hero = HeroData.givenDomainList.filter { $0.name == "Piccolo" }
         mockGetHerosUseCase.receivedResponse = hero
-        let locations = LocationDTOData.givenDomainList
+        let locations = LocationData.givenDomainList
         mockGetLocationsUseCase.receivedResponse = locations
         mockGetTransformationsUseCase.receivedResponse = []
     }
@@ -97,7 +97,7 @@ final class HeroViewModelTests: XCTestCase {
             case .ready:
                 readyExpectation.fulfill()
             default:
-                XCTFail("Waiting for transformations empty state")
+                XCTFail("Waiting for empty transformations")
             }
         }
         sut.load()

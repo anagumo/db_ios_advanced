@@ -30,7 +30,7 @@ final class LogoutUseCaseTests: XCTestCase {
         let logoutExpectation = expectation(description: "Logout succeed")
         let urlFile = try XCTUnwrap(Bundle(for: LogoutUseCaseTests.self).url(forResource: "jwt", withExtension: "txt"))
         let jwtData = try XCTUnwrap(Data(contentsOf: urlFile))
-        let herosDTO = HeroDTOData.givenList
+        let herosDTO = HeroData.givenDTOList
         mockStoreDataProvider.insertHeros(herosDTO)
         mockSessionLocalDataSource.set(jwtData)
         
