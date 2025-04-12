@@ -34,17 +34,14 @@ final class HerosViewModel: HerosViewModelProtocol {
         onStateChanged.update(.loading)
         
         herosUseCase.run(name: "") { [weak self] result in
-            do {
-                let heroList = try result.get()
+            switch result {
+            case let.success(heroList):
                 self?.heroList = heroList
                 Logger.log("Heros state updated to ready", level: .info, layer: .presentation)
                 self?.onStateChanged.update(.ready)
-            } catch let error as PresentationError {
+            case let .failure(error):
                 Logger.log("Heros state updated to error: \(error.reason)", level: .error, layer: .presentation)
                 self?.onStateChanged.update(.error(error.reason))
-            } catch {
-                Logger.log("Heros state updated to error", level: .error, layer: .presentation)
-                self?.onStateChanged.update(.error(error.localizedDescription))
             }
         }
     }

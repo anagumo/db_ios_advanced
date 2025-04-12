@@ -1,8 +1,8 @@
 # 📝 Requirements
 * 	Implements the Clean Architecture, and **MVVM** design pattern in the Presentation layer
-* 	Uses **SwiftData** for persisting heroes and transformations
-* 	UI built with **XIBs** 
-* 	Unit **tests** for services, persistence and view models
+* 	Uses **SwiftData** for persisting heros, transformations and locations
+* 	UI built with **XIBs** and **UIKit**
+* 	Unit **tests** for services, persistence, use cases and view models
 * 	Consumes the Dragon Ball **REST API**
 
 
@@ -38,6 +38,10 @@
 * Implement a search feature for heroes
 * Enable sorting options for the hero list
 
+# 🏞️ Style
+As part of support for Light and Dark mode, I created some assets for both Any appearance and dark:
+![](Images/appicon.png) | ![](Images/assets.png)
+
 # 🧽 Clean Architecture
 
 Here the squence diagram for the project:
@@ -57,3 +61,8 @@ In general, I used OSLog to monitor the behavior of each event and created mock 
 ![](Images/logger+testing.png)
 
 In summary, initiating the project by building from the outline layers proved to be more efficient in my experience, as relying on the UI often slows down the process due to the iOS simulator's load time. I now feel confident that when it's time to implement the UI, all components will integrate seamlessly.
+
+![](Images/coverage.png)
+
+# 👨🏻‍🏫 Thanks
+I'm grateful to my teacher Pedro Muñoz. His classes were a great experience, and I learned a practical approach to implementation—writing code based on real needs from the start.
