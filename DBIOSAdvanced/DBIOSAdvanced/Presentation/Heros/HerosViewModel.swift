@@ -14,7 +14,7 @@ protocol HerosViewModelProtocol {
     func load()
     func getAll() -> [Hero]
     func getCount() -> Int
-    func getHero(position: Int) -> Hero?
+    func get(by position: Int) -> Hero?
     func filter(by inputText: String) -> [Hero]
     func logout()
 }
@@ -57,7 +57,7 @@ final class HerosViewModel: HerosViewModelProtocol {
         heroList.count
     }
     
-    func getHero(position: Int) -> Hero? {
+    func get(by position: Int) -> Hero? {
         guard position < heroList.count else {
             Logger.log("Hero not found in the list", level: .error, layer: .presentation)
             return nil

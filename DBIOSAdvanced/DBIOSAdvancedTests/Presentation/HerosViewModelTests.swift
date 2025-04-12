@@ -48,7 +48,7 @@ final class HerosViewModelTests: XCTestCase {
         wait(for: [loadingExpectation, readyExpectation], timeout: 0.1)
         XCTAssert(!sut.getAll().isEmpty)
         XCTAssertEqual(sut.getCount(), 5)
-        let hero = try XCTUnwrap(sut.getHero(position: 0))
+        let hero = try XCTUnwrap(sut.get(by: 0))
         XCTAssertEqual(hero.identifier, "D13A40E5-4418-4223-9CE6-D2F9A28EBE94")
         XCTAssertEqual(hero.name, "Goku")
         XCTAssertEqual(hero.info, "Sobran las presentaciones cuando se habla de Goku.")
@@ -81,7 +81,7 @@ final class HerosViewModelTests: XCTestCase {
         XCTAssertEqual(receivedErrorReason, "No data received")
         XCTAssert(sut.getAll().isEmpty)
         XCTAssertEqual(sut.getCount(), 0)
-        XCTAssertNil(sut.getHero(position: 0))
+        XCTAssertNil(sut.get(by: 0))
     }
     
     func testLoadHeros_WhenStateIsEmptyError() throws {
@@ -110,7 +110,7 @@ final class HerosViewModelTests: XCTestCase {
         XCTAssertEqual(receivedErrorReason, "Empty entity list")
         XCTAssert(sut.getAll().isEmpty)
         XCTAssertEqual(sut.getCount(), 0)
-        XCTAssertNil(sut.getHero(position: 0))
+        XCTAssertNil(sut.get(by: 0))
     }
     
     func testHome_WhenStateIsLogout() throws {

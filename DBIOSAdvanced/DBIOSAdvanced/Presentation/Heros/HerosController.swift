@@ -162,7 +162,7 @@ extension HerosController: UICollectionViewDelegateFlowLayout, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
-            let hero = herosViewModel.getHero(position: indexPath.row),
+            let hero = herosViewModel.get(by: indexPath.row),
             let heroName = hero.name else {
             return
         }
