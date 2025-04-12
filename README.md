@@ -32,9 +32,6 @@
 * Support for Light and Dark Mode
 
 # 😮‍💨 Optional 
-* Display the user’s current location on the map
-* Allow users to select the map type
-* Show detailed location information on the map
 * Implement a search feature for heroes
 * Enable sorting options for the hero list
 

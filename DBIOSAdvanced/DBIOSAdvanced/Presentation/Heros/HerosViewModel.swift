@@ -15,6 +15,7 @@ protocol HerosViewModelProtocol {
     func getAll() -> [Hero]
     func getCount() -> Int
     func getHero(position: Int) -> Hero?
+    func filter(by inputText: String) -> [Hero]
     func logout()
 }
 
@@ -22,12 +23,14 @@ final class HerosViewModel: HerosViewModelProtocol {
     private let herosUseCase: GetHerosUseCaseProtocol
     private let logoutUseCase: LogoutUseCaseProtocol
     private var heroList: [Hero]
+    private var heroListFiltered: [Hero]
     private(set) var onStateChanged = Binding<HerosState>()
     
     init(herosUseCase: GetHerosUseCaseProtocol, logoutUseCase: LogoutUseCaseProtocol) {
         self.herosUseCase = herosUseCase
         self.logoutUseCase = logoutUseCase
         self.heroList = []
+        self.heroListFiltered = []
     }
     
     func load() {
@@ -60,6 +63,14 @@ final class HerosViewModel: HerosViewModelProtocol {
             return nil
         }
         return heroList[position]
+    }
+    
+    func filter(by inputText: String) -> [Hero] {
+        heroList.filter {
+            $0.name?
+                .lowercased()
+                .contains(inputText.lowercased()) ?? false
+        }
     }
     
     func logout() {

@@ -14,6 +14,9 @@ final class HerosController: UIViewController {
     private var dataSource: DataSource?
     typealias CellRegistration = UICollectionView.CellRegistration<HeroCell, Hero>
     
+    //MARK: - Search
+    private var searchController: UISearchController?
+    
     // MARK: - View Model
     private let herosViewModel: HerosViewModelProtocol
     
@@ -30,6 +33,7 @@ final class HerosController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        configureSearchController()
         configureCollectionView()
         bind()
         herosViewModel.load()
@@ -38,6 +42,24 @@ final class HerosController: UIViewController {
     // MARK: - UI Actions
     @IBAction func onTryAgainButton(_ sender: Any) {
         herosViewModel.load()
+    }
+    
+    // Configure a search bar to filter heros
+    private func configureSearchController() {
+        // Create the search controller and set this screen as search result container
+        searchController = UISearchController(searchResultsController: nil)
+        // Set the responsability to this controller of any text changes within search bar and update results
+        searchController?.searchResultsUpdater = self
+        // Set off the property that obscures the screen while searching
+        searchController?.obscuresBackgroundDuringPresentation = false
+        // Place search bar in the navigation bar since is not compatible do this from IB
+        navigationItem.searchController = searchController
+        // Changes the search bar text color to white, set after set the controller
+        //searchController?.searchBar.searchTextField.textColor = .white
+        // Dispaly the search bar always
+        navigationItem.hidesSearchBarWhenScrolling = false
+        // Hide the search bar when user navigates to another screen
+        definesPresentationContext = true
     }
     
     private func configureCollectionView() {
@@ -86,9 +108,13 @@ final class HerosController: UIViewController {
         errorStackView.isHidden = true
         collectionView.isHidden = false
         // Update collection view data source
+        applySnapshot(herosViewModel.getAll())
+    }
+    
+    private func applySnapshot(_ heroList: [Hero]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(herosViewModel.getAll())
+        snapshot.appendItems(heroList)
         dataSource?.apply(snapshot)
     }
     
@@ -141,5 +167,20 @@ extension HerosController: UICollectionViewDelegateFlowLayout, UICollectionViewD
             return
         }
         show(HeroBuilder(name: heroName).build(), sender: self)
+    }
+}
+
+// MARK: Search Controller Delegates
+extension HerosController: UISearchResultsUpdating {
+    
+    /// Update search results based on the text entered in the search bar
+    /// - Parameter searchController: a controller of type `(UISearchController)` that represent an instance of the search bar
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let inputText = searchController.searchBar.text, !inputText.isEmpty else {
+            // Restore the data source after clearing the search
+            applySnapshot(herosViewModel.getAll())
+            return
+        }
+        applySnapshot(herosViewModel.filter(by: inputText))
     }
 }
