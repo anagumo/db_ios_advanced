@@ -89,6 +89,8 @@ final class HerosController: UIViewController {
                 self?.renderLoading()
             case .ready:
                 self?.renderReady()
+            case .sorted:
+                self?.renderSorted()
             case .logout:
                 self?.renderLogout()
             case let .error(message):
@@ -107,15 +109,12 @@ final class HerosController: UIViewController {
         activityIndicatorView.stopAnimating()
         errorStackView.isHidden = true
         collectionView.isHidden = false
-        // Update collection view data source
+        navigationItem.leftBarButtonItem?.isEnabled = herosViewModel.getCount() > 0
         applySnapshot(herosViewModel.getAll())
     }
     
-    private func applySnapshot(_ heroList: [Hero]) {
-        var snapshot = Snapshot()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(heroList)
-        dataSource?.apply(snapshot)
+    private func renderSorted() {
+        applySnapshot(herosViewModel.getAll())
     }
     
     private func renderLogout() {
@@ -130,6 +129,13 @@ final class HerosController: UIViewController {
         collectionView.isHidden = true
         errorStackView.isHidden = false
         errorLabel.text = message
+    }
+    
+    private func applySnapshot(_ heroList: [Hero]) {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(heroList)
+        dataSource?.apply(snapshot)
     }
 }
 
@@ -147,6 +153,14 @@ extension HerosController {
                 self.herosViewModel.logout()
             }
         )
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "arrow.up.arrow.down"),
+            primaryAction: UIAction { uiAction in
+                self.herosViewModel.sort()
+            }
+        )
+        navigationItem.leftBarButtonItem?.isEnabled = false
     }
 }
 

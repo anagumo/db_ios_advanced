@@ -12,6 +12,10 @@ final class HerosViewModelTests: XCTestCase {
         mockLogoutUseCase = MockLogoutUseCase()
         sut = HerosViewModel(
             herosUseCase: mockHerosUseCase,
+            // Use case not mocked since is part of optional features
+            sortHerosUseCase: SortHerosUseCase(
+                storeDataProvider: .init(persistenceType: .memory)
+            ),
             logoutUseCase: mockLogoutUseCase
         )
     }
@@ -67,7 +71,7 @@ final class HerosViewModelTests: XCTestCase {
             switch state {
             case .loading:
                 loadingExpectation.fulfill()
-            case .ready, .logout:
+            case .ready, .logout, .sorted:
                 XCTFail("Waiting for error")
             case .error(let reason):
                 receivedErrorReason = reason
@@ -96,7 +100,7 @@ final class HerosViewModelTests: XCTestCase {
             switch state {
             case .loading:
                 loadingExpectation.fulfill()
-            case .ready, .logout:
+            case .ready, .logout, .sorted:
                 XCTFail("Waiting for error")
             case .error(let reason):
                 receivedErrorReason = reason
@@ -126,7 +130,7 @@ final class HerosViewModelTests: XCTestCase {
             switch result {
             case .loading:
                 loadingExpectation.fulfill()
-            case .ready, .error:
+            case .ready, .sorted, .error:
                 XCTFail("Waiting for logout state")
             case .logout:
                 logoutExpectation.fulfill()
@@ -149,7 +153,7 @@ final class HerosViewModelTests: XCTestCase {
             switch result {
             case .loading:
                 loadingExpectation.fulfill()
-            case .ready, .logout:
+            case .ready, .sorted, .logout:
                 XCTFail("Waiting for session error state")
             case let .error(errorMessage):
                 receivedError = errorMessage

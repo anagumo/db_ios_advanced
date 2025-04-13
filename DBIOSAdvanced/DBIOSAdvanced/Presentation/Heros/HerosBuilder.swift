@@ -4,6 +4,7 @@ final class HerosBuilder {
     func build() -> UIViewController {
         let viewModel = HerosViewModel(
             herosUseCase: GetHerosUseCase(),
+            sortHerosUseCase: SortHerosUseCase(),
             logoutUseCase: LogoutUseCase()
         )
         let controller = HerosController(herosViewModel: viewModel)
