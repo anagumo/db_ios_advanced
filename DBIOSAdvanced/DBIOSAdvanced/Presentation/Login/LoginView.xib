@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginController" customModule="DBIOSAdvanced" customModuleProvider="target">
             <connections>
+                <outlet property="contentStackView" destination="Ubd-HI-AlW" id="86g-qh-dOB"/>
                 <outlet property="loginButton" destination="GeY-7m-lu9" id="Dqd-PB-Ls3"/>
                 <outlet property="passwordErrorLabel" destination="UvS-OX-f75" id="SQU-oh-pUx"/>
                 <outlet property="passwordTextField" destination="TFq-mg-xby" id="l6M-PF-ttS"/>

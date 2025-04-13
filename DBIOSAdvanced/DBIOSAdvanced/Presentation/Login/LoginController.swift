@@ -2,6 +2,7 @@ import UIKit
 
 final class LoginController: UIViewController {
     // MARK: - UIComponents
+    @IBOutlet weak var contentStackView: UIStackView!
     @IBOutlet private weak var usernameTextField: UITextField!
     @IBOutlet private weak var usernameErrorLabel: UILabel!
     @IBOutlet private weak var passwordTextField: UITextField!
@@ -23,7 +24,14 @@ final class LoginController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureKeyboardDismiss()
         bind()
+    }
+    
+    private func configureKeyboardDismiss() {
+        passwordTextField.delegate = self
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onViewTapped))
+        view.addGestureRecognizer(tapGesture)
     }
     
     // MARK: - Component Actions
@@ -32,6 +40,10 @@ final class LoginController: UIViewController {
             username: usernameTextField.text,
             password: passwordTextField.text
         )
+    }
+    
+    @objc func onViewTapped(_ sender: Any) {
+        view.endEditing(true)
     }
     
     // MARK: - Binding
@@ -81,5 +93,15 @@ final class LoginController: UIViewController {
             passwordErrorLabel.text = regexLintError.errorDescription
             passwordErrorLabel.isHidden = false
         }
+    }
+}
+
+// MARK: - TextField Delegate
+extension LoginController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        onViewTapped(self)
+        onLoginButtonTapped(self)
+        return true
     }
 }
